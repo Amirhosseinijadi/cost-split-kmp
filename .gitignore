@@ -2,7 +2,7 @@
 .idea/
 build/
 **/build/
-.kotlin/metadata
+.kotlin/metadata/kotlinTransformedMetadataLibraries
 local.properties
 *.iml
 *.log
