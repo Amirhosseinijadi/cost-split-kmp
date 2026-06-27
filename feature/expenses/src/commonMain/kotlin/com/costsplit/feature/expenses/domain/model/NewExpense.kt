@@ -1,9 +1,10 @@
 package com.costsplit.feature.expenses.domain.model
 
 data class NewExpense(
+    val groupId: String,
     val description: String,
-    val amountInMinorUnits: Long,
+    val totalAmount: String,
     val currency: String,
-    val paidByMemberId: String,
+    val paidByUserId: String,
+    val participantUserIds: Set<String>,
 )
-

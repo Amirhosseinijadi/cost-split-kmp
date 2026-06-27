@@ -22,5 +22,10 @@ include(
     ":composeApp",
     ":core:common",
     ":core:network",
+    ":core:ui",
+    ":feature:activity",
     ":feature:expenses",
+    ":feature:groups",
+    ":feature:home",
+    ":feature:settings",
 )

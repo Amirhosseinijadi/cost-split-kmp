@@ -29,12 +29,20 @@ SDK and toolchain policy is centralized, while namespaces, application identity,
 
 Change `BASE_URL` in `composeApp/build.gradle.kts` for the Spring Boot server. Android emulator defaults to `http://10.0.2.2:8080/`; desktop and iOS default to `http://localhost:8080/`.
 
-The sample expects:
+The client is wired to the Spring Boot backend contract in `cost-split-backend`:
 
-- `GET /api/expenses`
-- `POST /api/expenses`
+- `POST /api/v1/users`
+- `GET /api/v1/users`
+- `GET /api/v1/users/{userId}`
+- `POST /api/v1/groups`
+- `GET /api/v1/groups/{groupId}`
+- `POST /api/v1/groups/{groupId}/members`
+- `POST /api/v1/groups/{groupId}/expenses`
+- `GET /api/v1/groups/{groupId}/expenses`
+- `GET /api/v1/expenses/{expenseId}`
+- `GET /api/v1/groups/{groupId}/balances`
 
-Adjust `ExpenseApi` and its DTOs when the backend contract is available.
+Backend UUID, instant, and decimal money values are represented as shared Kotlin strings in the KMP wire/domain models.
 
 ## Run
 

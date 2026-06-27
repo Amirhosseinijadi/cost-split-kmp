@@ -12,7 +12,14 @@ class AddExpenseUseCaseTest {
     @Test
     fun rejectsInvalidExpenseBeforeRepositoryCall() = runTest {
         val result = AddExpenseUseCase(FakeExpenseRepository())(
-            NewExpense("", 0, "USD", "member-1")
+            NewExpense(
+                groupId = "group-1",
+                description = "",
+                totalAmount = "0",
+                currency = "USD",
+                paidByUserId = "user-1",
+                participantUserIds = setOf("user-1"),
+            )
         )
 
         assertIs<AppResult.Failure>(result)
@@ -20,7 +27,7 @@ class AddExpenseUseCaseTest {
 }
 
 private class FakeExpenseRepository : ExpenseRepository {
-    override suspend fun getExpenses(): AppResult<List<Expense>> = AppResult.Success(emptyList())
+    override suspend fun getExpenses(groupId: String): AppResult<List<Expense>> = AppResult.Success(emptyList())
+    override suspend fun getExpense(expenseId: String): AppResult<Expense> = error("Must not be called")
     override suspend fun addExpense(expense: NewExpense): AppResult<Expense> = error("Must not be called")
 }
-

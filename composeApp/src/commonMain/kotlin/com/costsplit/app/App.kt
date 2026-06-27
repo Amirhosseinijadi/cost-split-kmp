@@ -1,13 +1,12 @@
 package com.costsplit.app
 
 import androidx.compose.runtime.Composable
-import com.costsplit.feature.expenses.presentation.ExpensesScreen
-import com.costsplit.feature.expenses.presentation.ExpensesViewModel
-import org.koin.compose.viewmodel.koinViewModel
+import com.costsplit.app.navigation.CostSplitNavHost
+import com.costsplit.core.ui.theme.CostSplitTheme
 
 @Composable
 fun App() {
-    val viewModel = koinViewModel<ExpensesViewModel>()
-    ExpensesScreen(viewModel)
+    CostSplitTheme {
+        CostSplitNavHost()
+    }
 }
-

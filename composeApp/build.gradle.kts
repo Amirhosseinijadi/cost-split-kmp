@@ -3,17 +3,26 @@ import org.jetbrains.compose.desktop.application.dsl.TargetFormat
 plugins {
     id("costsplit.kmp.application")
     id("costsplit.compose.multiplatform")
+    id("costsplit.kotlin.serialization")
 }
 
 kotlin {
     sourceSets {
         commonMain.dependencies {
             implementation(project(":core:network"))
+            implementation(project(":core:ui"))
+            implementation(project(":feature:activity"))
             implementation(project(":feature:expenses"))
+            implementation(project(":feature:groups"))
+            implementation(project(":feature:home"))
+            implementation(project(":feature:settings"))
+            implementation(compose.foundation)
+            implementation(compose.material3)
             implementation(compose.runtime)
             implementation(compose.ui)
             implementation(libs.koin.compose)
             implementation(libs.koin.compose.viewmodel)
+            implementation(libs.kotlinx.serialization.core)
         }
         androidMain.dependencies { implementation(libs.androidx.activity.compose) }
         desktopMain.dependencies { implementation(compose.desktop.currentOs) }
