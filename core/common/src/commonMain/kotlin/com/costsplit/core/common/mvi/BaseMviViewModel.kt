@@ -10,7 +10,6 @@ abstract class BaseMviViewModel<
     initialState: State,
     private val delegate: MviDelegate<State, Effect> = DefaultMviDelegate(initialState),
 ) : ViewModel(), MviStateHost<State, Effect> by delegate {
-
     protected val currentState: State
         get() = delegate.currentState
 
@@ -28,4 +27,3 @@ abstract class BaseMviViewModel<
         delegate.emitEffect(effect)
     }
 }
-

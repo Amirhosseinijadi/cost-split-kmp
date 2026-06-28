@@ -12,7 +12,6 @@ kotlin {
             implementation(compose.material3)
             implementation(compose.runtime)
             implementation(compose.ui)
-            implementation(libs.androidx.lifecycle.viewmodel)
             implementation(libs.koin.core)
             implementation(libs.koin.compose.viewmodel)
         }

@@ -24,7 +24,10 @@ kotlin {
             implementation(libs.koin.compose.viewmodel)
             implementation(libs.kotlinx.serialization.core)
         }
-        androidMain.dependencies { implementation(libs.androidx.activity.compose) }
+        androidMain.dependencies {
+            implementation(compose.uiTooling)
+            implementation(libs.androidx.activity.compose)
+        }
         desktopMain.dependencies { implementation(compose.desktop.currentOs) }
     }
 }

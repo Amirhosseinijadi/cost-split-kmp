@@ -10,7 +10,6 @@ kotlin {
             api(project(":core:common"))
             implementation(project(":core:network"))
             implementation(compose.runtime)
-            implementation(libs.androidx.lifecycle.viewmodel)
             implementation(libs.koin.core)
             implementation(libs.koin.compose.viewmodel)
             implementation(libs.kotlinx.coroutines.core)
