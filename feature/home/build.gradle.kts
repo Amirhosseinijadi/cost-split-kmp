@@ -8,6 +8,8 @@ kotlin {
         commonMain.dependencies {
             implementation(project(":core:common"))
             implementation(project(":core:ui"))
+            implementation(project(":feature:groups"))
+            implementation(project(":feature:users"))
             implementation(compose.foundation)
             implementation(compose.material3)
             implementation(compose.runtime)

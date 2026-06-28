@@ -7,4 +7,7 @@ data class NewExpense(
     val currency: String,
     val paidByUserId: String,
     val participantUserIds: Set<String>,
+    val category: String = "general",
+    val note: String? = null,
+    val occurredOn: String? = null,
 )

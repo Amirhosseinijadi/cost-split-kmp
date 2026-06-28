@@ -15,6 +15,8 @@ data class GroupResponse(
     val id: String,
     val name: String,
     val ownerUserId: String,
+    val icon: String? = null,
+    val color: String? = null,
     val members: List<GroupMemberResponse>,
     val createdAt: String,
 )

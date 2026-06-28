@@ -22,6 +22,9 @@ data class ExpenseResponse(
     val paidByUserId: String,
     val paidByDisplayName: String,
     val splitType: String,
+    val category: String = "general",
+    val note: String? = null,
+    val occurredOn: String,
     val shares: List<ExpenseShareResponse>,
     val createdAt: String,
 )

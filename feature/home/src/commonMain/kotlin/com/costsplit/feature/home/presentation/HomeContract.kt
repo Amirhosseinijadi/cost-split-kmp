@@ -5,6 +5,7 @@ import com.costsplit.core.common.mvi.MviIntent
 import com.costsplit.core.common.mvi.MviState
 
 sealed interface HomeIntent : MviIntent {
+    data object Refresh : HomeIntent
     data object CreateGroupClicked : HomeIntent
     data object ActivityClicked : HomeIntent
 }
@@ -17,6 +18,8 @@ data class HomeState(
     val oweDetail: String = "Across 3 groups",
     val owedBackDetail: String = "From 5 friends",
     val recentGroups: List<HomeGroupUi> = emptyList(),
+    val isLoading: Boolean = false,
+    val errorMessage: String? = null,
 ) : MviState
 
 data class HomeGroupUi(

@@ -7,6 +7,7 @@ import com.costsplit.feature.groups.data.remote.response.group.GroupBalancesResp
 import com.costsplit.feature.groups.data.remote.response.group.GroupResponse
 
 interface GroupRemoteDataSource {
+    suspend fun listUserGroups(userId: String): AppResult<List<GroupResponse>>
     suspend fun createGroup(request: CreateGroupRequest): AppResult<GroupResponse>
     suspend fun getGroup(groupId: String): AppResult<GroupResponse>
     suspend fun addGroupMember(groupId: String, request: AddGroupMemberRequest): AppResult<GroupResponse>

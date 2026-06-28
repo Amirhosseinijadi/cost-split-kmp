@@ -22,6 +22,11 @@ internal class GroupRemoteDataSourceImpl(
     private val baseUrl: String,
     dispatchers: AppDispatchers,
 ) : BaseRemoteDataSource(dispatchers), GroupRemoteDataSource {
+    override suspend fun listUserGroups(userId: String): AppResult<List<GroupResponse>> =
+        safeApiCall {
+            client.get(baseUrl.apiUrl("api/v1/users/$userId/groups")).body()
+        }
+
     override suspend fun createGroup(request: CreateGroupRequest): AppResult<GroupResponse> =
         safeApiCall {
             client.post(baseUrl.apiUrl("api/v1/groups")) {

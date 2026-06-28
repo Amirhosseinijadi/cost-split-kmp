@@ -106,6 +106,26 @@ fun HomeScreen(
             SectionHeader(title = "Recent groups", action = "See all")
         }
 
+        state.errorMessage?.let { message ->
+            item {
+                Text(
+                    text = message,
+                    color = MaterialTheme.colorScheme.error,
+                    style = MaterialTheme.typography.bodyMedium,
+                )
+            }
+        }
+
+        if (state.isLoading && state.recentGroups.isEmpty()) {
+            item {
+                Text(
+                    text = "Loading...",
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    style = MaterialTheme.typography.bodyMedium,
+                )
+            }
+        }
+
         items(state.recentGroups) { group ->
             HomeGroupRow(group)
         }

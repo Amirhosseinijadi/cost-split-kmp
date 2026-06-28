@@ -16,6 +16,9 @@ internal fun ExpenseResponse.toDomain() = Expense(
     paidByUserId = paidByUserId,
     paidByDisplayName = paidByDisplayName,
     splitType = splitType,
+    category = category,
+    note = note,
+    occurredOn = occurredOn,
     shares = shares.map { it.toDomain() },
     createdAt = createdAt,
 )
@@ -32,4 +35,7 @@ internal fun NewExpense.toRequest() = CreateExpenseRequest(
     currency = currency,
     paidByUserId = paidByUserId,
     participantUserIds = participantUserIds,
+    category = category,
+    note = note,
+    occurredOn = occurredOn,
 )

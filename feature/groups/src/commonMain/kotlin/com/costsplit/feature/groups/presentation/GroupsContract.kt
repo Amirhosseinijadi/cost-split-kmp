@@ -5,6 +5,7 @@ import com.costsplit.core.common.mvi.MviIntent
 import com.costsplit.core.common.mvi.MviState
 
 sealed interface GroupsIntent : MviIntent {
+    data object Refresh : GroupsIntent
     data class GroupClicked(val groupId: String) : GroupsIntent
     data object AddGroupClicked : GroupsIntent
 }
@@ -14,6 +15,8 @@ data class GroupsState(
     val subtitle: String = "Shared spaces for every plan.",
     val groups: List<GroupUi> = emptyList(),
     val expenses: Map<String, List<GroupExpenseUi>> = emptyMap(),
+    val isLoading: Boolean = false,
+    val errorMessage: String? = null,
 ) : MviState {
     fun group(groupId: String): GroupUi? = groups.firstOrNull { it.id == groupId }
     fun groupExpenses(groupId: String): List<GroupExpenseUi> = expenses[groupId].orEmpty()

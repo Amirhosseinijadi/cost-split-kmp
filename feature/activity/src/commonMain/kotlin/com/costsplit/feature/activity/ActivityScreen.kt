@@ -48,6 +48,26 @@ fun ActivityScreen(
             SectionHeader(title = "Recent updates")
         }
 
+        state.errorMessage?.let { message ->
+            item {
+                Text(
+                    text = message,
+                    color = MaterialTheme.colorScheme.error,
+                    style = MaterialTheme.typography.bodyMedium,
+                )
+            }
+        }
+
+        if (state.isLoading && state.activities.isEmpty()) {
+            item {
+                Text(
+                    text = "Loading...",
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    style = MaterialTheme.typography.bodyMedium,
+                )
+            }
+        }
+
         items(state.activities) { activity ->
             ActivityRow(activity)
         }

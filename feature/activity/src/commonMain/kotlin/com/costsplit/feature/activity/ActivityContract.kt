@@ -12,6 +12,8 @@ data class ActivityState(
     val title: String = "Activity",
     val subtitle: String = "Every expense, payment, and group update in one timeline.",
     val activities: List<ActivityUi> = emptyList(),
+    val isLoading: Boolean = false,
+    val errorMessage: String? = null,
 ) : MviState
 
 data class ActivityUi(

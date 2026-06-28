@@ -59,6 +59,26 @@ fun GroupsScreen(
             SectionHeader(title = "Active balances")
         }
 
+        state.errorMessage?.let { message ->
+            item {
+                Text(
+                    text = message,
+                    color = MaterialTheme.colorScheme.error,
+                    style = MaterialTheme.typography.bodyMedium,
+                )
+            }
+        }
+
+        if (state.isLoading && state.groups.isEmpty()) {
+            item {
+                Text(
+                    text = "Loading...",
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    style = MaterialTheme.typography.bodyMedium,
+                )
+            }
+        }
+
         items(state.groups) { group ->
             GroupRow(group = group, onClick = { onIntent(GroupsIntent.GroupClicked(group.id)) })
         }

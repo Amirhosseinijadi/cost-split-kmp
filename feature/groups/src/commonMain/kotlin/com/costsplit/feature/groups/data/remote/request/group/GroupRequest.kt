@@ -7,6 +7,8 @@ data class CreateGroupRequest(
     val name: String,
     val ownerUserId: String,
     val memberUserIds: Set<String> = emptySet(),
+    val icon: String? = null,
+    val color: String? = null,
 )
 
 @Serializable
