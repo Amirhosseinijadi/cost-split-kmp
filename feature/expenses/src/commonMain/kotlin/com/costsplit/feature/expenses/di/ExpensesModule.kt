@@ -11,7 +11,7 @@ import org.koin.core.module.dsl.viewModel
 import org.koin.dsl.module
 
 fun expensesModule(baseUrl: String) = module {
-    single<ExpenseRemoteDataSource> { ExpenseRemoteDataSourceImpl(get(), baseUrl) }
+    single<ExpenseRemoteDataSource> { ExpenseRemoteDataSourceImpl(get(), baseUrl, get()) }
     single<ExpenseRepository> { ExpenseRepositoryImpl(get()) }
     factory { GetExpensesUseCase(get()) }
     factory { AddExpenseUseCase(get()) }

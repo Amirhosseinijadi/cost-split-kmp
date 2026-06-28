@@ -7,6 +7,6 @@ import org.koin.core.module.dsl.viewModel
 import org.koin.dsl.module
 
 fun groupsModule(baseUrl: String) = module {
-    single<GroupRemoteDataSource> { GroupRemoteDataSourceImpl(get(), baseUrl) }
+    single<GroupRemoteDataSource> { GroupRemoteDataSourceImpl(get(), baseUrl, get()) }
     viewModel { GroupsViewModel() }
 }

@@ -1,5 +1,8 @@
 package com.costsplit.feature.users.data.remote
 
+import com.costsplit.core.common.coroutine.AppDispatchers
+import com.costsplit.core.common.result.AppResult
+import com.costsplit.core.network.remote.BaseRemoteDataSource
 import com.costsplit.core.network.remote.apiUrl
 import com.costsplit.feature.users.data.remote.dataSource.UserRemoteDataSource
 import com.costsplit.feature.users.data.remote.request.user.CreateUserRequest
@@ -15,16 +18,23 @@ import io.ktor.http.contentType
 internal class UserRemoteDataSourceImpl(
     private val client: HttpClient,
     private val baseUrl: String,
-) : UserRemoteDataSource {
-    override suspend fun createUser(request: CreateUserRequest): UserResponse =
-        client.post(baseUrl.apiUrl("api/v1/users")) {
-            contentType(ContentType.Application.Json)
-            setBody(request)
-        }.body()
+    dispatchers: AppDispatchers,
+) : BaseRemoteDataSource(dispatchers), UserRemoteDataSource {
+    override suspend fun createUser(request: CreateUserRequest): AppResult<UserResponse> =
+        safeApiCall {
+            client.post(baseUrl.apiUrl("api/v1/users")) {
+                contentType(ContentType.Application.Json)
+                setBody(request)
+            }.body()
+        }
 
-    override suspend fun listUsers(): List<UserResponse> =
-        client.get(baseUrl.apiUrl("api/v1/users")).body()
+    override suspend fun listUsers(): AppResult<List<UserResponse>> =
+        safeApiCall {
+            client.get(baseUrl.apiUrl("api/v1/users")).body()
+        }
 
-    override suspend fun getUser(userId: String): UserResponse =
-        client.get(baseUrl.apiUrl("api/v1/users/$userId")).body()
+    override suspend fun getUser(userId: String): AppResult<UserResponse> =
+        safeApiCall {
+            client.get(baseUrl.apiUrl("api/v1/users/$userId")).body()
+        }
 }
