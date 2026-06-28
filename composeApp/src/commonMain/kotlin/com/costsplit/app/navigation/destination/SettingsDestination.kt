@@ -5,8 +5,8 @@ import androidx.compose.runtime.getValue
 import com.costsplit.app.navigation.AppDestination
 import com.costsplit.app.navigation.AppRoute
 import com.costsplit.app.navigation.NavEntry
-import com.costsplit.feature.settings.SettingsScreen
-import com.costsplit.feature.settings.SettingsViewModel
+import com.costsplit.feature.settings.presentation.SettingsScreen
+import com.costsplit.feature.settings.presentation.SettingsViewModel
 import org.koin.compose.viewmodel.koinViewModel
 
 val settingsDestination = AppDestination { route, _ ->

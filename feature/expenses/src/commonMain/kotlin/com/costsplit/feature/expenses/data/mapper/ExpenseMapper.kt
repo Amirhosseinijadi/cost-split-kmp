@@ -1,8 +1,8 @@
 package com.costsplit.feature.expenses.data.mapper
 
-import com.costsplit.feature.expenses.data.remote.dto.CreateExpenseRequest
-import com.costsplit.feature.expenses.data.remote.dto.ExpenseResponse
-import com.costsplit.feature.expenses.data.remote.dto.ExpenseShareResponse
+import com.costsplit.feature.expenses.data.remote.request.expense.CreateExpenseRequest
+import com.costsplit.feature.expenses.data.remote.response.expense.ExpenseResponse
+import com.costsplit.feature.expenses.data.remote.response.expense.ExpenseShareResponse
 import com.costsplit.feature.expenses.domain.model.Expense
 import com.costsplit.feature.expenses.domain.model.ExpenseShare
 import com.costsplit.feature.expenses.domain.model.NewExpense

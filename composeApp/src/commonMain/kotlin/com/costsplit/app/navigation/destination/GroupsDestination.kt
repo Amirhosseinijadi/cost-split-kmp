@@ -3,13 +3,14 @@ package com.costsplit.app.navigation.destination
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.costsplit.app.navigation.AppDestination
 import com.costsplit.app.navigation.AppRoute
 import com.costsplit.app.navigation.NavEntry
-import com.costsplit.feature.groups.GroupDetailsScreen
-import com.costsplit.feature.groups.GroupsEffect
-import com.costsplit.feature.groups.GroupsScreen
-import com.costsplit.feature.groups.GroupsViewModel
+import com.costsplit.feature.groups.presentation.detail.GroupDetailsScreen
+import com.costsplit.feature.groups.presentation.GroupsEffect
+import com.costsplit.feature.groups.presentation.GroupsScreen
+import com.costsplit.feature.groups.presentation.GroupsViewModel
 import kotlinx.coroutines.flow.collectLatest
 import org.koin.compose.viewmodel.koinViewModel
 
@@ -17,7 +18,7 @@ val groupsDestination = AppDestination { route, navigator ->
     when (route) {
         AppRoute.Groups -> NavEntry(route) {
             val viewModel = koinViewModel<GroupsViewModel>()
-            val state by viewModel.state.collectAsState()
+            val state by viewModel.state.collectAsStateWithLifecycle()
             LaunchedEffect(viewModel) {
                 viewModel.effects.collectLatest { effect ->
                     when (effect) {

@@ -1,8 +1,9 @@
 package com.costsplit.feature.expenses.data.remote
 
+import com.costsplit.core.network.remote.apiUrl
 import com.costsplit.feature.expenses.data.remote.dataSource.ExpenseRemoteDataSource
-import com.costsplit.feature.expenses.data.remote.dto.CreateExpenseRequest
-import com.costsplit.feature.expenses.data.remote.dto.ExpenseResponse
+import com.costsplit.feature.expenses.data.remote.request.expense.CreateExpenseRequest
+import com.costsplit.feature.expenses.data.remote.response.expense.ExpenseResponse
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.request.get
@@ -23,7 +24,7 @@ internal class ExpenseRemoteDataSourceImpl(
 
     override suspend fun createExpense(
         groupId: String,
-        request: CreateExpenseRequest
+        request: CreateExpenseRequest,
     ): ExpenseResponse =
         client.post(baseUrl.apiUrl("api/v1/groups/$groupId/expenses")) {
             contentType(ContentType.Application.Json)

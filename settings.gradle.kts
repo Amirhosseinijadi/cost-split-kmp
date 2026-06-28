@@ -29,4 +29,5 @@ include(
     ":feature:groups",
     ":feature:home",
     ":feature:settings",
+    ":feature:users",
 )

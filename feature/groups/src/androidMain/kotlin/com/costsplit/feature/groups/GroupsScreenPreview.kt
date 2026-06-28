@@ -3,12 +3,31 @@ package com.costsplit.feature.groups
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
 import com.costsplit.core.ui.theme.CostSplitTheme
+import com.costsplit.feature.groups.presentation.GroupExpenseUi
+import com.costsplit.feature.groups.presentation.GroupUi
+import com.costsplit.feature.groups.presentation.GroupsScreen
+import com.costsplit.feature.groups.presentation.GroupsState
+import com.costsplit.feature.groups.presentation.detail.GroupDetailsScreen
 
 private val previewGroupsState = GroupsState(
     groups = listOf(
-        GroupUi("summer-trip", "Summer Trip", "4 members", "$248.60", 0.72f, "Alex pays you $42.80"),
+        GroupUi(
+            "summer-trip",
+            "Summer Trip",
+            "4 members",
+            "$248.60",
+            0.72f,
+            "Alex pays you $42.80"
+        ),
         GroupUi("apartment", "Apartment", "3 members", "$76.10", 0.36f, "You pay Mina $18.30"),
-        GroupUi("office-lunch", "Office Lunch", "6 members", "$34.20", 0.22f, "Sara pays you $9.40"),
+        GroupUi(
+            "office-lunch",
+            "Office Lunch",
+            "6 members",
+            "$34.20",
+            0.22f,
+            "Sara pays you $9.40"
+        ),
     ),
     expenses = mapOf(
         "summer-trip" to listOf(
