@@ -1,7 +1,5 @@
 package com.costsplit.app.navigation.destination
 
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.costsplit.app.navigation.AppDestination
@@ -11,7 +9,6 @@ import com.costsplit.feature.groups.presentation.detail.GroupDetailsScreen
 import com.costsplit.feature.groups.presentation.GroupsEffect
 import com.costsplit.feature.groups.presentation.GroupsScreen
 import com.costsplit.feature.groups.presentation.GroupsViewModel
-import kotlinx.coroutines.flow.collectLatest
 import org.koin.compose.viewmodel.koinViewModel
 
 val groupsDestination = AppDestination { route, navigator ->
@@ -19,12 +16,10 @@ val groupsDestination = AppDestination { route, navigator ->
         AppRoute.Groups -> NavEntry(route) {
             val viewModel = koinViewModel<GroupsViewModel>()
             val state by viewModel.state.collectAsStateWithLifecycle()
-            LaunchedEffect(viewModel) {
-                viewModel.effects.collectLatest { effect ->
-                    when (effect) {
-                        is GroupsEffect.NavigateToGroupDetails -> {
-                            navigator.navigate(AppRoute.GroupDetails(effect.groupId))
-                        }
+            CollectEffectWithLifecycle(viewModel.effects) { effect ->
+                when (effect) {
+                    is GroupsEffect.NavigateToGroupDetails -> {
+                        navigator.navigate(AppRoute.GroupDetails(effect.groupId))
                     }
                 }
             }
@@ -42,7 +37,7 @@ val groupDetailsDestination = AppDestination { route, _ ->
     when (route) {
         is AppRoute.GroupDetails -> NavEntry(route) {
             val viewModel = koinViewModel<GroupsViewModel>()
-            val state by viewModel.state.collectAsState()
+            val state by viewModel.state.collectAsStateWithLifecycle()
             GroupDetailsScreen(
                 group = state.group(route.groupId),
                 expenses = state.groupExpenses(route.groupId),
