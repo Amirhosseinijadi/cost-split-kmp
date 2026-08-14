@@ -14,7 +14,7 @@ private fun AppShellPreview() {
             currentRoute = AppRoute.Home,
             onDestinationSelected = {},
         ) {
-            Text("Preview content")
+            Text("پیش‌نمایش محتوای فارسی")
         }
     }
 }

@@ -15,9 +15,9 @@ private fun SettingsScreenPreview() {
             state = SettingsState(
                 notificationsEnabled = true,
                 settings = listOf(
-                    SettingUi("Default currency", "USD"),
-                    SettingUi("Split method", "Equal split"),
-                    SettingUi("Payment reminders", "Every Friday"),
+                    SettingUi("واحد پول پیش‌فرض", "دلار آمریکا"),
+                    SettingUi("روش تقسیم", "تقسیم مساوی"),
+                    SettingUi("یادآوری پرداخت", "هر جمعه"),
                 ),
             ),
             onIntent = {},

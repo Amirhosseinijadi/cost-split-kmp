@@ -47,7 +47,7 @@ class HomeViewModel(
         }
         val activeUser = users.firstOrNull()
         if (activeUser == null) {
-            updateState { copy(isLoading = false, errorMessage = "No users found.") }
+            updateState { copy(isLoading = false, errorMessage = "هنوز کاربری ساخته نشده است.") }
             return@launch
         }
 
@@ -83,8 +83,8 @@ class HomeViewModel(
 
     private fun Group.toHomeUi(balances: GroupBalances?, activeUserId: String) = HomeGroupUi(
         name = name,
-        members = "${members.size} members",
-        balance = balances?.primaryUserBalance(activeUserId) ?: "No balance",
+        members = "${members.size.toPersianDigits()} عضو",
+        balance = balances?.primaryUserBalance(activeUserId) ?: "تسویه‌شده",
     )
 
     private fun GroupBalances.primaryUserBalance(activeUserId: String): String? {
@@ -118,9 +118,13 @@ class HomeViewModel(
         return if (currency == "USD") "${'$'}$value" else "$value $currency"
     }
 
-    private fun Int.groupCountLabel() = "Across $this groups"
+    private fun Int.groupCountLabel() = "در ${toPersianDigits()} گروه"
 
-    private fun Int.friendCountLabel() = "From $this friends"
+    private fun Int.friendCountLabel() = "از ${toPersianDigits()} دوست"
+
+    private fun Int.toPersianDigits(): String = toString().map { digit ->
+        if (digit.isDigit()) "۰۱۲۳۴۵۶۷۸۹"[digit.digitToInt()] else digit
+    }.joinToString("")
 
     private data class BalanceTotals(
         val owe: Double,

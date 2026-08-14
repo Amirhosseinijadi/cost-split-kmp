@@ -1,10 +1,26 @@
+# Gradle and Kotlin generated caches
 .gradle/
-.idea/
+.kotlin/
+.konan/
 build/
 **/build/
-.kotlin/metadata/kotlinTransformedMetadataLibraries
+
+# IDE and local machine files
+.idea/
+.fleet/
 local.properties
 *.iml
 *.log
 .DS_Store
 
+# Android packages and native build output
+*.apk
+*.aab
+.cxx/
+**/.cxx/
+
+# Apple/Xcode generated files
+DerivedData/
+*.xcuserstate
+xcuserdata/
+**/xcuserdata/

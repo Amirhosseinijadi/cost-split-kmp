@@ -23,6 +23,7 @@ fun SectionHeader(
     ) {
         Text(
             text = title,
+            color = MaterialTheme.colorScheme.onBackground,
             fontWeight = FontWeight.Bold,
             style = MaterialTheme.typography.titleMedium,
         )

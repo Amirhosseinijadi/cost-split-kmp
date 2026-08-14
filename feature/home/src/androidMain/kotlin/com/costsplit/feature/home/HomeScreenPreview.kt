@@ -14,9 +14,9 @@ private fun HomeScreenPreview() {
         HomeScreen(
             state = HomeState(
                 recentGroups = listOf(
-                    HomeGroupUi("Summer Trip", "4 members", "$248.60 open"),
-                    HomeGroupUi("Apartment", "3 members", "$76.10 open"),
-                    HomeGroupUi("Office Lunch", "6 members", "$34.20 open"),
+                    HomeGroupUi("سفر شمال", "۴ عضو", "+$248.60"),
+                    HomeGroupUi("خانه", "۳ عضو", "-$76.10"),
+                    HomeGroupUi("ناهار شرکت", "۶ عضو", "+$34.20"),
                 ),
             ),
             onIntent = {},

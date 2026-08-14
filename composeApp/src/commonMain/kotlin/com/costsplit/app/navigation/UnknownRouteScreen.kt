@@ -19,7 +19,7 @@ fun UnknownRouteScreen(route: AppRoute) {
         verticalArrangement = Arrangement.Center,
     ) {
         Text(
-            text = "Screen not found",
+            text = "این صفحه پیدا نشد",
             style = MaterialTheme.typography.titleLarge,
         )
         Text(

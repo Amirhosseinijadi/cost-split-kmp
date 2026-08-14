@@ -1,8 +1,8 @@
 package com.costsplit.core.common.utils
 
 object Constant {
-    const val NETWORK_ERROR_MESSAGE = "Unable to connect to the server"
-    const val UN_AUTHORIZED_MESSAGE = "Your session has expired"
-    const val SERVER_ERROR_MESSAGE = "Server error"
-    const val UNKNOWN_ERROR_MESSAGE = "Something went wrong"
+    const val NETWORK_ERROR_MESSAGE = "ارتباط با سرور برقرار نشد"
+    const val UN_AUTHORIZED_MESSAGE = "نشست شما منقضی شده است"
+    const val SERVER_ERROR_MESSAGE = "خطایی در سرور رخ داد"
+    const val UNKNOWN_ERROR_MESSAGE = "مشکلی پیش آمد؛ دوباره تلاش کنید"
 }

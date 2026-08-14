@@ -9,8 +9,8 @@ sealed interface SettingsIntent : MviIntent {
 }
 
 data class SettingsState(
-    val title: String = "Settings",
-    val subtitle: String = "Personalize your cost splitting workflow.",
+    val title: String = "تنظیمات",
+    val subtitle: String = "دُنگی را آن‌طور که دوست دارید تنظیم کنید",
     val notificationsEnabled: Boolean = true,
     val settings: List<SettingUi> = emptyList(),
 ) : MviState

@@ -11,9 +11,9 @@ private fun ActivityScreenPreview() {
         ActivityScreen(
             state = ActivityState(
                 activities = listOf(
-                    ActivityUi("Mina added Dinner", "Summer Trip", "$86.40", "Today"),
-                    ActivityUi("You settled with Alex", "Apartment", "$24.00", "Yesterday"),
-                    ActivityUi("Sara added Groceries", "Family", "$58.10", "Jun 24"),
+                    ActivityUi("مینا هزینه شام را ثبت کرد", "سفر شمال", "$86.40", "امروز"),
+                    ActivityUi("شما با علی تسویه کردید", "خانه", "$24.00", "دیروز"),
+                    ActivityUi("سارا خرید خانه را ثبت کرد", "خانواده", "$58.10", "۳ تیر"),
                 ),
             ),
             onIntent = {},

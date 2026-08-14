@@ -30,7 +30,10 @@ kotlin {
             implementation(compose.uiTooling)
             implementation(libs.androidx.activity.compose)
         }
-        desktopMain.dependencies { implementation(compose.desktop.currentOs) }
+        desktopMain.dependencies {
+            implementation(compose.desktop.currentOs)
+            implementation(libs.kotlinx.coroutines.swing)
+        }
     }
 }
 

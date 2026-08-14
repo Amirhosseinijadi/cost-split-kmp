@@ -5,9 +5,9 @@ import com.costsplit.core.common.mvi.BaseMviViewModel
 class SettingsViewModel : BaseMviViewModel<SettingsIntent, SettingsState, SettingsEffect>(
     SettingsState(
         settings = listOf(
-            SettingUi("Default currency", "USD"),
-            SettingUi("Split method", "Equal split"),
-            SettingUi("Payment reminders", "Every Friday"),
+            SettingUi("واحد پول پیش‌فرض", "دلار آمریکا"),
+            SettingUi("روش تقسیم", "تقسیم مساوی"),
+            SettingUi("یادآوری پرداخت", "هر جمعه"),
         ),
     ),
 ) {

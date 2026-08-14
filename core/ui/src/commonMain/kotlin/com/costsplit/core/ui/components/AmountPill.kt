@@ -16,17 +16,29 @@ fun AmountPill(
     text: String,
     modifier: Modifier = Modifier,
 ) {
+    val isNegative = text.trim().startsWith("-")
+    val backgroundColor = if (isNegative) {
+        MaterialTheme.colorScheme.error.copy(alpha = 0.14f)
+    } else {
+        MaterialTheme.colorScheme.tertiaryContainer
+    }
+    val contentColor = if (isNegative) {
+        MaterialTheme.colorScheme.error
+    } else {
+        MaterialTheme.colorScheme.onTertiaryContainer
+    }
+
     Box(
         modifier = modifier
             .background(
-                color = MaterialTheme.colorScheme.primaryContainer,
+                color = backgroundColor,
                 shape = RoundedCornerShape(6.dp),
             )
-            .padding(horizontal = 10.dp, vertical = 6.dp),
+            .padding(horizontal = 10.dp, vertical = 5.dp),
     ) {
         Text(
             text = text,
-            color = MaterialTheme.colorScheme.onPrimaryContainer,
+            color = contentColor,
             fontWeight = FontWeight.SemiBold,
             style = MaterialTheme.typography.labelLarge,
         )

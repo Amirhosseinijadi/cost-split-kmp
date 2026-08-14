@@ -38,7 +38,7 @@ class ActivityViewModel(
         }
         val activeUser = users.firstOrNull()
         if (activeUser == null) {
-            updateState { copy(isLoading = false, errorMessage = "No users found.") }
+            updateState { copy(isLoading = false, errorMessage = "هنوز کاربری ساخته نشده است.") }
             return@launch
         }
 
@@ -78,7 +78,7 @@ class ActivityViewModel(
     }
 
     private fun Expense.toActivity(groupName: String) = ActivityUi(
-        title = "$paidByDisplayName added $description",
+        title = "$paidByDisplayName هزینه‌ی «$description» را ثبت کرد",
         group = groupName,
         amount = totalAmount.formattedMoney(currency),
         date = occurredOn.ifBlank { createdAt.take(10) },
