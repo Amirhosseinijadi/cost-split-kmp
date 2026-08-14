@@ -10,6 +10,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.costsplit.core.ui.strings.DongiString
+import com.costsplit.core.ui.strings.dongiString
 
 @Composable
 fun UnknownRouteScreen(route: AppRoute) {
@@ -19,7 +21,7 @@ fun UnknownRouteScreen(route: AppRoute) {
         verticalArrangement = Arrangement.Center,
     ) {
         Text(
-            text = "این صفحه پیدا نشد",
+            text = dongiString(DongiString.UnknownScreen),
             style = MaterialTheme.typography.titleLarge,
         )
         Text(

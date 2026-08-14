@@ -3,7 +3,9 @@ package com.costsplit.feature.groups.presentation
 import androidx.lifecycle.viewModelScope
 import com.costsplit.core.common.mvi.BaseMviViewModel
 import com.costsplit.core.common.result.AppResult
-import com.costsplit.core.common.result.message
+import com.costsplit.core.ui.strings.DongiString
+import com.costsplit.core.ui.strings.DongiText
+import com.costsplit.core.ui.strings.toDongiText
 import com.costsplit.feature.expenses.domain.model.Expense
 import com.costsplit.feature.expenses.domain.usecase.GetExpensesUseCase
 import com.costsplit.feature.groups.domain.model.CurrencyBalance
@@ -43,20 +45,20 @@ class GroupsViewModel(
         val users = when (val result = getUsers()) {
             is AppResult.Success -> result.value
             is AppResult.Failure -> {
-                updateState { copy(isLoading = false, errorMessage = result.error.message()) }
+                updateState { copy(isLoading = false, errorMessage = result.error.toDongiText()) }
                 return@launch
             }
         }
         val activeUser = users.firstOrNull()
         if (activeUser == null) {
-            updateState { copy(isLoading = false, errorMessage = "هنوز کاربری ساخته نشده است.") }
+            updateState { copy(isLoading = false, errorMessage = DongiText(DongiString.ErrorNoUser)) }
             return@launch
         }
 
         val groups = when (val result = getUserGroups(activeUser.id)) {
             is AppResult.Success -> result.value
             is AppResult.Failure -> {
-                updateState { copy(isLoading = false, errorMessage = result.error.message()) }
+                updateState { copy(isLoading = false, errorMessage = result.error.toDongiText()) }
                 return@launch
             }
         }
@@ -94,8 +96,8 @@ class GroupsViewModel(
         return GroupUi(
             id = id,
             name = name,
-            members = "${members.size.toPersianDigits()} عضو",
-            balance = userAmount?.formattedMoney(primaryBalance.currency) ?: "تسویه‌شده",
+            memberCount = members.size,
+            balance = userAmount?.formattedMoney(primaryBalance.currency),
             progress = primaryBalance.progressFor(activeUserId),
             settlement = primaryBalance.settlementText(activeUserId),
             currency = primaryBalance?.currency ?: "USD",
@@ -127,28 +129,38 @@ class GroupsViewModel(
         return (abs(userAmount) / max(maxAmount, 1.0)).toFloat().coerceIn(0f, 1f)
     }
 
-    private fun CurrencyBalance?.settlementText(activeUserId: String): String {
-        if (this == null) return "اطلاعات تسویه در دسترس نیست"
-        val settlement = suggestedSettlements.firstOrNull() ?: return "همه‌چیز تسویه است"
+    private fun CurrencyBalance?.settlementText(activeUserId: String): DongiText {
+        if (this == null) return DongiText(DongiString.SettlementUnavailable)
+        val settlement = suggestedSettlements.firstOrNull()
+            ?: return DongiText(DongiString.SettlementComplete)
         val fromName = displayName(settlement.fromUserId)
         val toName = displayName(settlement.toUserId)
         return settlement.toText(activeUserId, fromName, toName, currency)
     }
 
     private fun CurrencyBalance.displayName(userId: String): String =
-        members.firstOrNull { it.userId == userId }?.displayName ?: "عضو گروه"
+        members.firstOrNull { it.userId == userId }?.displayName.orEmpty()
 
     private fun SuggestedSettlement.toText(
         activeUserId: String,
         fromName: String,
         toName: String,
         currency: String,
-    ): String {
+    ): DongiText {
         val value = amount.formattedMoney(currency)
         return when {
-            fromUserId == activeUserId -> "شما باید $value به $toName بپردازید"
-            toUserId == activeUserId -> "$fromName باید $value به شما بپردازد"
-            else -> "$fromName باید $value به $toName بپردازد"
+            fromUserId == activeUserId -> DongiText(
+                DongiString.SettlementYouPay,
+                listOf(value, toName),
+            )
+            toUserId == activeUserId -> DongiText(
+                DongiString.SettlementPaysYou,
+                listOf(fromName, value),
+            )
+            else -> DongiText(
+                DongiString.SettlementMemberPays,
+                listOf(fromName, value, toName),
+            )
         }
     }
 
@@ -158,7 +170,4 @@ class GroupsViewModel(
         return if (currency == "USD") "$sign${'$'}$value" else "$sign$value $currency"
     }
 
-    private fun Int.toPersianDigits(): String = toString().map { digit ->
-        if (digit.isDigit()) "۰۱۲۳۴۵۶۷۸۹"[digit.digitToInt()] else digit
-    }.joinToString("")
 }

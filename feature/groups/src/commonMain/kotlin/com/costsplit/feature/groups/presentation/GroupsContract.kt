@@ -3,6 +3,7 @@ package com.costsplit.feature.groups.presentation
 import com.costsplit.core.common.mvi.MviEffect
 import com.costsplit.core.common.mvi.MviIntent
 import com.costsplit.core.common.mvi.MviState
+import com.costsplit.core.ui.strings.DongiText
 
 sealed interface GroupsIntent : MviIntent {
     data object Refresh : GroupsIntent
@@ -11,12 +12,10 @@ sealed interface GroupsIntent : MviIntent {
 }
 
 data class GroupsState(
-    val title: String = "گروه‌های من",
-    val subtitle: String = "هر دورهمی، یک حساب روشن",
     val groups: List<GroupUi> = emptyList(),
     val expenses: Map<String, List<GroupExpenseUi>> = emptyMap(),
     val isLoading: Boolean = false,
-    val errorMessage: String? = null,
+    val errorMessage: DongiText? = null,
 ) : MviState {
     fun group(groupId: String): GroupUi? = groups.firstOrNull { it.id == groupId }
     fun groupExpenses(groupId: String): List<GroupExpenseUi> = expenses[groupId].orEmpty()
@@ -25,10 +24,10 @@ data class GroupsState(
 data class GroupUi(
     val id: String,
     val name: String,
-    val members: String,
-    val balance: String,
+    val memberCount: Int,
+    val balance: String?,
     val progress: Float,
-    val settlement: String,
+    val settlement: DongiText,
     val currency: String = "USD",
     val memberBalances: List<MemberBalanceUi> = emptyList(),
 )

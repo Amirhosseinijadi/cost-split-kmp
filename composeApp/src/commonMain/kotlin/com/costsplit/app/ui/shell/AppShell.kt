@@ -22,6 +22,8 @@ import com.costsplit.app.navigation.AppRoute
 import com.costsplit.app.navigation.topLevelDestinations
 import com.costsplit.core.ui.components.DongiGlyph
 import com.costsplit.core.ui.components.DongiIcon
+import com.costsplit.core.ui.strings.DongiString
+import com.costsplit.core.ui.strings.dongiString
 
 @Composable
 fun AppShell(
@@ -56,7 +58,7 @@ fun AppShell(
                             val selected = currentRoute::class == destination.route::class ||
                                 currentRoute is AppRoute.GroupDetails && destination.route is AppRoute.Groups
                             BottomTab(
-                                label = destination.label,
+                                label = dongiString(destination.route.labelResource()),
                                 icon = destination.icon,
                                 selected = selected,
                                 onClick = { onDestinationSelected(destination.route) },
@@ -75,6 +77,13 @@ fun AppShell(
             content()
         }
     }
+}
+
+private fun AppRoute.labelResource(): DongiString = when (this) {
+    AppRoute.Home -> DongiString.NavHome
+    AppRoute.Groups, is AppRoute.GroupDetails -> DongiString.NavGroups
+    AppRoute.Activity -> DongiString.NavActivity
+    AppRoute.Settings -> DongiString.NavSettings
 }
 
 @Composable

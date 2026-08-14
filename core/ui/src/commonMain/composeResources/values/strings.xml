@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">دُنگی</string>
+    <string name="nav_home">خانه</string>
+    <string name="nav_groups">گروه‌ها</string>
+    <string name="nav_activity">فعالیت‌ها</string>
+    <string name="nav_settings">تنظیمات</string>
+    <string name="unknown_screen">این صفحه پیدا نشد</string>
+
+    <string name="error_network">ارتباط با سرور برقرار نشد</string>
+    <string name="error_unauthorized">نشست شما منقضی شده است</string>
+    <string name="error_server">خطایی در سرور رخ داد (%1$d)</string>
+    <string name="error_unknown">مشکلی پیش آمد؛ دوباره تلاش کنید</string>
+    <string name="error_no_user">هنوز کاربری ساخته نشده است.</string>
+
+    <string name="home_greeting">سلام 👋</string>
+    <string name="home_subtitle">امروز حساب‌ها این شکلیه</string>
+    <string name="home_avatar">د</string>
+    <string name="home_receivable">طلب قابل دریافت</string>
+    <string name="home_you_owe">بدهی شما</string>
+    <string name="home_owed_to_you">طلب شما</string>
+    <string name="home_new_group">گروه جدید</string>
+    <string name="home_activity">فعالیت‌ها</string>
+    <string name="home_refresh">تازه‌سازی</string>
+    <string name="home_recent_groups">گروه‌های اخیر</string>
+    <string name="see_all">مشاهده همه</string>
+    <string name="home_empty_title">هنوز گروهی ندارید</string>
+    <string name="home_empty_message">اولین گروه را برای سفر، خانه یا دورهمی بسازید.</string>
+    <string name="groups_count">در %1$s گروه</string>
+    <string name="friends_count">از %1$s دوست</string>
+    <string name="members_count">%1$s عضو</string>
+    <string name="settled">تسویه‌شده</string>
+
+    <string name="groups_title">گروه‌های من</string>
+    <string name="groups_subtitle">هر دورهمی، یک حساب روشن</string>
+    <string name="my_account">حساب من</string>
+    <string name="my_avatar">م</string>
+    <string name="total_balance">مانده‌ی کل</string>
+    <string name="active_groups_count">در %1$s گروه فعال</string>
+    <string name="create_group">گروه جدید</string>
+    <string name="groups_empty_title">اینجا هنوز خلوت است</string>
+    <string name="groups_empty_message">یک گروه بسازید و اعضا را برای تقسیم هزینه‌ها اضافه کنید.</string>
+    <string name="settlement_unavailable">اطلاعات تسویه در دسترس نیست</string>
+    <string name="settlement_complete">همه‌چیز تسویه است</string>
+    <string name="group_member_fallback">عضو گروه</string>
+    <string name="settlement_you_pay">شما باید %1$s به %2$s بپردازید</string>
+    <string name="settlement_pays_you">%1$s باید %2$s به شما بپردازد</string>
+    <string name="settlement_member_pays">%1$s باید %2$s به %3$s بپردازد</string>
+
+    <string name="group_details_title">جزئیات گروه</string>
+    <string name="without_members">بدون عضو</string>
+    <string name="group_subtitle">%1$s • %2$s</string>
+    <string name="group_your_balance">مانده‌ی شما در این گروه</string>
+    <string name="add_expense">ثبت هزینه</string>
+    <string name="members_and_balances">اعضا و مانده‌ها</string>
+    <string name="no_balance_title">مانده‌ای ثبت نشده</string>
+    <string name="no_balance_message">با ثبت اولین هزینه، مانده‌ی اعضا محاسبه می‌شود.</string>
+    <string name="recent_expenses">هزینه‌های اخیر</string>
+    <string name="no_expense_title">هنوز هزینه‌ای نیست</string>
+    <string name="no_expense_message">اولین هزینه‌ی مشترک این گروه را ثبت کنید.</string>
+    <string name="category_food">خوراک</string>
+    <string name="category_transport">رفت‌وآمد</string>
+    <string name="category_travel">سفر</string>
+    <string name="category_shopping">خرید</string>
+    <string name="category_general">هزینه مشترک</string>
+    <string name="paid_by">پرداخت با %1$s</string>
+    <string name="metadata_separator"> • </string>
+
+    <string name="activity_title">فعالیت‌ها</string>
+    <string name="activity_subtitle">همه‌ی تغییرات حساب‌ها در یک نگاه</string>
+    <string name="recent_updates">تازه‌ترین تغییرات</string>
+    <string name="activity_empty_title">هنوز فعالیتی نیست</string>
+    <string name="activity_empty_message">با ثبت اولین هزینه، تغییرات گروه اینجا دیده می‌شوند.</string>
+    <string name="activity_added_expense">%1$s هزینه‌ی «%2$s» را ثبت کرد</string>
+    <string name="activity_metadata">%1$s • %2$s</string>
+
+    <string name="settings_title">تنظیمات</string>
+    <string name="settings_subtitle">دُنگی را آن‌طور که دوست دارید تنظیم کنید</string>
+    <string name="notifications">اعلان‌ها</string>
+    <string name="notifications_subtitle">یادآوری مانده‌حساب و تسویه‌ها</string>
+    <string name="account_preferences">ترجیحات حساب</string>
+    <string name="default_currency">واحد پول پیش‌فرض</string>
+    <string name="currency_us_dollar">دلار آمریکا</string>
+    <string name="split_method">روش تقسیم</string>
+    <string name="equal_split">تقسیم مساوی</string>
+    <string name="payment_reminder">یادآوری پرداخت</string>
+    <string name="every_friday">هر جمعه</string>
+</resources>

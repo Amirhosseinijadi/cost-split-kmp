@@ -3,7 +3,9 @@ package com.costsplit.feature.home.presentation
 import androidx.lifecycle.viewModelScope
 import com.costsplit.core.common.mvi.BaseMviViewModel
 import com.costsplit.core.common.result.AppResult
-import com.costsplit.core.common.result.message
+import com.costsplit.core.ui.strings.DongiString
+import com.costsplit.core.ui.strings.DongiText
+import com.costsplit.core.ui.strings.toDongiText
 import com.costsplit.feature.groups.domain.model.Group
 import com.costsplit.feature.groups.domain.model.GroupBalances
 import com.costsplit.feature.groups.domain.usecase.GetGroupBalancesUseCase
@@ -41,20 +43,20 @@ class HomeViewModel(
         val users = when (val result = getUsers()) {
             is AppResult.Success -> result.value
             is AppResult.Failure -> {
-                updateState { copy(isLoading = false, errorMessage = result.error.message()) }
+                updateState { copy(isLoading = false, errorMessage = result.error.toDongiText()) }
                 return@launch
             }
         }
         val activeUser = users.firstOrNull()
         if (activeUser == null) {
-            updateState { copy(isLoading = false, errorMessage = "هنوز کاربری ساخته نشده است.") }
+            updateState { copy(isLoading = false, errorMessage = DongiText(DongiString.ErrorNoUser)) }
             return@launch
         }
 
         val groups = when (val result = getUserGroups(activeUser.id)) {
             is AppResult.Success -> result.value
             is AppResult.Failure -> {
-                updateState { copy(isLoading = false, errorMessage = result.error.message()) }
+                updateState { copy(isLoading = false, errorMessage = result.error.toDongiText()) }
                 return@launch
             }
         }
@@ -70,8 +72,8 @@ class HomeViewModel(
             copy(
                 amountYouOwe = totals.owe.formattedMoney(totals.currency),
                 amountOwedBack = totals.owedBack.formattedMoney(totals.currency),
-                oweDetail = groups.size.groupCountLabel(),
-                owedBackDetail = users.size.friendCountLabel(),
+                groupCount = groups.size,
+                friendCount = users.size,
                 recentGroups = groups.take(3).map { group ->
                     group.toHomeUi(balances[group], activeUser.id)
                 },
@@ -83,8 +85,8 @@ class HomeViewModel(
 
     private fun Group.toHomeUi(balances: GroupBalances?, activeUserId: String) = HomeGroupUi(
         name = name,
-        members = "${members.size.toPersianDigits()} عضو",
-        balance = balances?.primaryUserBalance(activeUserId) ?: "تسویه‌شده",
+        memberCount = members.size,
+        balance = balances?.primaryUserBalance(activeUserId),
     )
 
     private fun GroupBalances.primaryUserBalance(activeUserId: String): String? {
@@ -117,14 +119,6 @@ class HomeViewModel(
         val value = removePrefix("-")
         return if (currency == "USD") "${'$'}$value" else "$value $currency"
     }
-
-    private fun Int.groupCountLabel() = "در ${toPersianDigits()} گروه"
-
-    private fun Int.friendCountLabel() = "از ${toPersianDigits()} دوست"
-
-    private fun Int.toPersianDigits(): String = toString().map { digit ->
-        if (digit.isDigit()) "۰۱۲۳۴۵۶۷۸۹"[digit.digitToInt()] else digit
-    }.joinToString("")
 
     private data class BalanceTotals(
         val owe: Double,

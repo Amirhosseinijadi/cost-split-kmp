@@ -5,6 +5,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
 import com.costsplit.app.navigation.AppRoute
 import com.costsplit.core.ui.theme.CostSplitTheme
+import com.costsplit.core.ui.strings.DongiString
+import com.costsplit.core.ui.strings.dongiString
 
 @Preview(showBackground = true)
 @Composable
@@ -14,7 +16,7 @@ private fun AppShellPreview() {
             currentRoute = AppRoute.Home,
             onDestinationSelected = {},
         ) {
-            Text("پیش‌نمایش محتوای فارسی")
+            Text(dongiString(DongiString.AppName))
         }
     }
 }

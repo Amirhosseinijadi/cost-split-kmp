@@ -30,6 +30,10 @@ import com.costsplit.core.ui.components.MetricCard
 import com.costsplit.core.ui.components.QuickAction
 import com.costsplit.core.ui.components.SectionHeader
 import com.costsplit.core.ui.components.ScreenTitle
+import com.costsplit.core.ui.strings.DongiString
+import com.costsplit.core.ui.strings.dongiString
+import com.costsplit.core.ui.strings.dongiText
+import com.costsplit.core.ui.strings.toPersianDigits
 
 @Composable
 fun HomeScreen(
@@ -44,19 +48,19 @@ fun HomeScreen(
         ) {
             item {
                 ScreenTitle(
-                    title = "سلام 👋",
-                    subtitle = "امروز حساب‌ها این شکلیه",
+                    title = dongiString(DongiString.HomeGreeting),
+                    subtitle = dongiString(DongiString.HomeSubtitle),
                     trailing = {
-                        AvatarBadge(label = "د", size = 44.dp)
+                        AvatarBadge(label = dongiString(DongiString.HomeAvatar), size = 44.dp)
                     },
                 )
             }
 
             item {
                 BalanceHero(
-                    title = "طلب قابل دریافت",
+                    title = dongiString(DongiString.HomeReceivable),
                     amount = "+ ${state.amountOwedBack}",
-                    detail = state.owedBackDetail,
+                    detail = dongiString(DongiString.FriendsCount, state.friendCount.toPersianDigits()),
                 )
             }
 
@@ -66,15 +70,15 @@ fun HomeScreen(
                     horizontalArrangement = Arrangement.spacedBy(12.dp),
                 ) {
                     MetricCard(
-                        title = "بدهی شما",
+                        title = dongiString(DongiString.HomeYouOwe),
                         value = state.amountYouOwe,
-                        detail = state.oweDetail,
+                        detail = dongiString(DongiString.GroupsCount, state.groupCount.toPersianDigits()),
                         modifier = Modifier.weight(1f),
                     )
                     MetricCard(
-                        title = "طلب شما",
+                        title = dongiString(DongiString.HomeOwedToYou),
                         value = state.amountOwedBack,
-                        detail = state.owedBackDetail,
+                        detail = dongiString(DongiString.FriendsCount, state.friendCount.toPersianDigits()),
                         modifier = Modifier.weight(1f),
                     )
                 }
@@ -86,17 +90,17 @@ fun HomeScreen(
                     horizontalArrangement = Arrangement.SpaceEvenly,
                 ) {
                     QuickAction(
-                        title = "گروه جدید",
+                        title = dongiString(DongiString.HomeNewGroup),
                         icon = DongiIcon.Groups,
                         onClick = { onIntent(HomeIntent.CreateGroupClicked) },
                     )
                     QuickAction(
-                        title = "فعالیت‌ها",
+                        title = dongiString(DongiString.HomeActivity),
                         icon = DongiIcon.Activity,
                         onClick = { onIntent(HomeIntent.ActivityClicked) },
                     )
                     QuickAction(
-                        title = "تازه‌سازی",
+                        title = dongiString(DongiString.HomeRefresh),
                         icon = DongiIcon.Settle,
                         onClick = { onIntent(HomeIntent.Refresh) },
                     )
@@ -104,13 +108,16 @@ fun HomeScreen(
             }
 
             item {
-                SectionHeader(title = "گروه‌های اخیر", action = "مشاهده همه")
+                SectionHeader(
+                    title = dongiString(DongiString.HomeRecentGroups),
+                    action = dongiString(DongiString.SeeAll),
+                )
             }
 
             state.errorMessage?.let { message ->
                 item {
                     Text(
-                        text = message,
+                        text = dongiText(message),
                         color = MaterialTheme.colorScheme.error,
                         style = MaterialTheme.typography.bodyMedium,
                     )
@@ -130,8 +137,8 @@ fun HomeScreen(
             if (!state.isLoading && state.errorMessage == null && state.recentGroups.isEmpty()) {
                 item {
                     DongiEmptyState(
-                        title = "هنوز گروهی ندارید",
-                        message = "اولین گروه را برای سفر، خانه یا دورهمی بسازید.",
+                        title = dongiString(DongiString.HomeEmptyTitle),
+                        message = dongiString(DongiString.HomeEmptyMessage),
                     )
                 }
             }
@@ -165,7 +172,7 @@ private fun HomeGroupRow(group: HomeGroupUi) {
                         style = MaterialTheme.typography.titleMedium,
                     )
                     Text(
-                        text = group.members,
+                        text = dongiString(DongiString.MembersCount, group.memberCount.toPersianDigits()),
                         color = MaterialTheme.colorScheme.onSurfaceVariant,
                         style = MaterialTheme.typography.bodySmall,
                     )
@@ -175,7 +182,7 @@ private fun HomeGroupRow(group: HomeGroupUi) {
                 horizontalArrangement = Arrangement.spacedBy(8.dp),
                 verticalAlignment = Alignment.CenterVertically,
             ) {
-                AmountPill(group.balance)
+                AmountPill(group.balance ?: dongiString(DongiString.Settled))
                 DongiGlyph(
                     icon = DongiIcon.Chevron,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
