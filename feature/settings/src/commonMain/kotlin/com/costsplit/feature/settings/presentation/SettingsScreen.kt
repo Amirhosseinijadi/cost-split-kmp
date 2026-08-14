@@ -1,6 +1,5 @@
 package com.costsplit.feature.settings.presentation
 
-import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -10,8 +9,8 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -19,94 +18,105 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import com.costsplit.core.ui.components.DongiCard
+import com.costsplit.core.ui.components.DongiGlyph
+import com.costsplit.core.ui.components.DongiIcon
+import com.costsplit.core.ui.components.DongiScreen
 import com.costsplit.core.ui.components.SectionHeader
+import com.costsplit.core.ui.components.ScreenTitle
 
 @Composable
 fun SettingsScreen(
     state: SettingsState,
     onIntent: (SettingsIntent) -> Unit,
 ) {
-    LazyColumn(
-        modifier = Modifier.fillMaxSize(),
-        contentPadding = PaddingValues(20.dp),
-        verticalArrangement = Arrangement.spacedBy(16.dp),
-    ) {
-        item {
-            Column(verticalArrangement = Arrangement.spacedBy(6.dp)) {
-                Text(
-                    text = state.title,
-                    style = MaterialTheme.typography.headlineMedium,
-                    fontWeight = FontWeight.Bold,
-                )
-                Text(
-                    text = state.subtitle,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+    DongiScreen(modifier = Modifier.fillMaxSize()) {
+        LazyColumn(
+            modifier = Modifier.fillMaxSize(),
+            contentPadding = PaddingValues(bottom = 10.dp),
+            verticalArrangement = Arrangement.spacedBy(18.dp),
+        ) {
+            item {
+                ScreenTitle(
+                    title = state.title,
+                    subtitle = state.subtitle,
                 )
             }
-        }
 
-        item {
-            Surface(
-                modifier = Modifier.fillMaxWidth(),
-                shape = MaterialTheme.shapes.small,
-                color = MaterialTheme.colorScheme.surface,
-                border = BorderStroke(1.dp, MaterialTheme.colorScheme.outline),
-            ) {
-                Row(
-                    modifier = Modifier.fillMaxWidth().padding(16.dp),
-                    horizontalArrangement = Arrangement.SpaceBetween,
-                    verticalAlignment = Alignment.CenterVertically,
-                ) {
-                    Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
-                        Text(
-                            text = "Notifications",
-                            fontWeight = FontWeight.SemiBold,
-                            style = MaterialTheme.typography.titleMedium,
-                        )
-                        Text(
-                            text = "Balance and settlement alerts",
-                            color = MaterialTheme.colorScheme.onSurfaceVariant,
-                            style = MaterialTheme.typography.bodySmall,
+            item {
+                DongiCard(modifier = Modifier.fillMaxWidth()) {
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                        verticalAlignment = Alignment.CenterVertically,
+                    ) {
+                        Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
+                            Text(
+                                text = "اعلان‌ها",
+                                color = MaterialTheme.colorScheme.onSurface,
+                                fontWeight = FontWeight.SemiBold,
+                                style = MaterialTheme.typography.titleMedium,
+                            )
+                            Text(
+                                text = "یادآوری مانده‌حساب و تسویه‌ها",
+                                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                                style = MaterialTheme.typography.bodySmall,
+                            )
+                        }
+                        Switch(
+                            checked = state.notificationsEnabled,
+                            onCheckedChange = { onIntent(SettingsIntent.NotificationsChanged(it)) },
                         )
                     }
-                    Switch(
-                        checked = state.notificationsEnabled,
-                        onCheckedChange = { onIntent(SettingsIntent.NotificationsChanged(it)) },
-                    )
                 }
             }
-        }
 
-        item {
-            SectionHeader(title = "Preferences")
-        }
+            item {
+                SectionHeader(title = "ترجیحات حساب")
+            }
 
-        items(state.settings) { setting ->
-            SettingRow(setting)
+            item {
+                DongiCard(
+                    modifier = Modifier.fillMaxWidth(),
+                    contentPadding = PaddingValues(0.dp),
+                ) {
+                    Column {
+                        state.settings.forEachIndexed { index, setting ->
+                            SettingRow(setting)
+                            if (index != state.settings.lastIndex) {
+                                HorizontalDivider(
+                                    modifier = Modifier.padding(horizontal = 18.dp),
+                                    color = MaterialTheme.colorScheme.outlineVariant,
+                                )
+                            }
+                        }
+                    }
+                }
+            }
         }
     }
 }
 
 @Composable
 private fun SettingRow(setting: SettingUi) {
-    Surface(
-        modifier = Modifier.fillMaxWidth(),
-        shape = MaterialTheme.shapes.small,
-        color = MaterialTheme.colorScheme.surface,
-        border = BorderStroke(1.dp, MaterialTheme.colorScheme.outline),
+    Row(
+        modifier = Modifier.fillMaxWidth().padding(horizontal = 18.dp, vertical = 15.dp),
+        horizontalArrangement = Arrangement.SpaceBetween,
+        verticalAlignment = Alignment.CenterVertically,
     ) {
-        Row(
-            modifier = Modifier.fillMaxWidth().padding(16.dp),
-            horizontalArrangement = Arrangement.SpaceBetween,
-        ) {
+        Column(verticalArrangement = Arrangement.spacedBy(2.dp)) {
             Text(
                 text = setting.title,
+                color = MaterialTheme.colorScheme.onSurface,
                 fontWeight = FontWeight.SemiBold,
+                style = MaterialTheme.typography.bodyMedium,
             )
             Text(
                 text = setting.value,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
+                style = MaterialTheme.typography.bodySmall,
             )
         }
+        DongiGlyph(DongiIcon.Chevron, MaterialTheme.colorScheme.onSurfaceVariant, size = 18.dp)
     }
 }

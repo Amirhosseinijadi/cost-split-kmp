@@ -10,6 +10,7 @@ kotlin {
             api(compose.material3)
             api(compose.runtime)
             api(compose.ui)
+            implementation(compose.components.resources)
         }
     }
 }

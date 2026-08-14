@@ -13,27 +13,27 @@ private val previewGroupsState = GroupsState(
     groups = listOf(
         GroupUi(
             "summer-trip",
-            "Summer Trip",
-            "4 members",
+            "سفر شمال",
+            "۴ عضو",
             "$248.60",
             0.72f,
-            "Alex pays you $42.80"
+            "علی باید $42.80 به شما بپردازد"
         ),
-        GroupUi("apartment", "Apartment", "3 members", "$76.10", 0.36f, "You pay Mina $18.30"),
+        GroupUi("apartment", "خانه", "۳ عضو", "-$76.10", 0.36f, "شما باید $18.30 به مینا بپردازید"),
         GroupUi(
             "office-lunch",
-            "Office Lunch",
-            "6 members",
+            "ناهار شرکت",
+            "۶ عضو",
             "$34.20",
             0.22f,
-            "Sara pays you $9.40"
+            "سارا باید $9.40 به شما بپردازد"
         ),
     ),
     expenses = mapOf(
         "summer-trip" to listOf(
-            GroupExpenseUi("Hotel deposit", "$420.00"),
-            GroupExpenseUi("Dinner", "$86.40"),
-            GroupExpenseUi("Museum tickets", "$64.00"),
+            GroupExpenseUi("بیعانه هتل", "$420.00", "علی", "travel", "۱۴۰۵/۰۵/۲۰"),
+            GroupExpenseUi("شام", "$86.40", "مینا", "food", "۱۴۰۵/۰۵/۱۹"),
+            GroupExpenseUi("بلیط موزه", "$64.00", "سارا", "travel", "۱۴۰۵/۰۵/۱۸"),
         ),
     ),
 )

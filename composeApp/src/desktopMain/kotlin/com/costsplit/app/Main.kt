@@ -5,9 +5,8 @@ import androidx.compose.ui.window.application
 import com.costsplit.app.di.initKoin
 
 fun main() {
-    initKoin("http://localhost:8080/")
+    initKoin("https://coast-split.darkube.ir")
     application {
-        Window(onCloseRequest = ::exitApplication, title = "Cost Split") { App() }
+        Window(onCloseRequest = ::exitApplication, title = "دُنگی") { App() }
     }
 }
-

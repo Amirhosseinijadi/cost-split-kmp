@@ -11,8 +11,8 @@ sealed interface GroupsIntent : MviIntent {
 }
 
 data class GroupsState(
-    val title: String = "Groups",
-    val subtitle: String = "Shared spaces for every plan.",
+    val title: String = "گروه‌های من",
+    val subtitle: String = "هر دورهمی، یک حساب روشن",
     val groups: List<GroupUi> = emptyList(),
     val expenses: Map<String, List<GroupExpenseUi>> = emptyMap(),
     val isLoading: Boolean = false,
@@ -29,11 +29,21 @@ data class GroupUi(
     val balance: String,
     val progress: Float,
     val settlement: String,
+    val currency: String = "USD",
+    val memberBalances: List<MemberBalanceUi> = emptyList(),
+)
+
+data class MemberBalanceUi(
+    val name: String,
+    val amount: String,
 )
 
 data class GroupExpenseUi(
     val title: String,
     val amount: String,
+    val paidBy: String = "",
+    val category: String = "general",
+    val date: String = "",
 )
 
 sealed interface GroupsEffect : MviEffect {

@@ -49,7 +49,7 @@ class GroupsViewModel(
         }
         val activeUser = users.firstOrNull()
         if (activeUser == null) {
-            updateState { copy(isLoading = false, errorMessage = "No users found.") }
+            updateState { copy(isLoading = false, errorMessage = "هنوز کاربری ساخته نشده است.") }
             return@launch
         }
 
@@ -94,16 +94,26 @@ class GroupsViewModel(
         return GroupUi(
             id = id,
             name = name,
-            members = "${members.size} members",
-            balance = userAmount?.formattedMoney(primaryBalance.currency) ?: "No balance",
+            members = "${members.size.toPersianDigits()} عضو",
+            balance = userAmount?.formattedMoney(primaryBalance.currency) ?: "تسویه‌شده",
             progress = primaryBalance.progressFor(activeUserId),
             settlement = primaryBalance.settlementText(activeUserId),
+            currency = primaryBalance?.currency ?: "USD",
+            memberBalances = primaryBalance?.members.orEmpty().map {
+                MemberBalanceUi(
+                    name = it.displayName,
+                    amount = it.netAmount.formattedMoney(primaryBalance?.currency ?: "USD"),
+                )
+            },
         )
     }
 
     private fun Expense.toUi() = GroupExpenseUi(
         title = description,
         amount = totalAmount.formattedMoney(currency),
+        paidBy = paidByDisplayName,
+        category = category,
+        date = occurredOn,
     )
 
     private fun CurrencyBalance?.progressFor(activeUserId: String): Float {
@@ -118,15 +128,15 @@ class GroupsViewModel(
     }
 
     private fun CurrencyBalance?.settlementText(activeUserId: String): String {
-        if (this == null) return "No settlement available"
-        val settlement = suggestedSettlements.firstOrNull() ?: return "All settled"
+        if (this == null) return "اطلاعات تسویه در دسترس نیست"
+        val settlement = suggestedSettlements.firstOrNull() ?: return "همه‌چیز تسویه است"
         val fromName = displayName(settlement.fromUserId)
         val toName = displayName(settlement.toUserId)
         return settlement.toText(activeUserId, fromName, toName, currency)
     }
 
     private fun CurrencyBalance.displayName(userId: String): String =
-        members.firstOrNull { it.userId == userId }?.displayName ?: "Member"
+        members.firstOrNull { it.userId == userId }?.displayName ?: "عضو گروه"
 
     private fun SuggestedSettlement.toText(
         activeUserId: String,
@@ -136,14 +146,19 @@ class GroupsViewModel(
     ): String {
         val value = amount.formattedMoney(currency)
         return when {
-            fromUserId == activeUserId -> "You pay $toName $value"
-            toUserId == activeUserId -> "$fromName pays you $value"
-            else -> "$fromName pays $toName $value"
+            fromUserId == activeUserId -> "شما باید $value به $toName بپردازید"
+            toUserId == activeUserId -> "$fromName باید $value به شما بپردازد"
+            else -> "$fromName باید $value به $toName بپردازد"
         }
     }
 
     private fun String.formattedMoney(currency: String): String {
+        val sign = if (startsWith("-")) "-" else "+"
         val value = removePrefix("-")
-        return if (currency == "USD") "${'$'}$value" else "$value $currency"
+        return if (currency == "USD") "$sign${'$'}$value" else "$sign$value $currency"
     }
+
+    private fun Int.toPersianDigits(): String = toString().map { digit ->
+        if (digit.isDigit()) "۰۱۲۳۴۵۶۷۸۹"[digit.digitToInt()] else digit
+    }.joinToString("")
 }

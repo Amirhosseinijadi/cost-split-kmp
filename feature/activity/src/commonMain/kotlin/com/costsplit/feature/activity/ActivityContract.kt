@@ -9,8 +9,8 @@ sealed interface ActivityIntent : MviIntent {
 }
 
 data class ActivityState(
-    val title: String = "Activity",
-    val subtitle: String = "Every expense, payment, and group update in one timeline.",
+    val title: String = "فعالیت‌ها",
+    val subtitle: String = "همه‌ی تغییرات حساب‌ها در یک نگاه",
     val activities: List<ActivityUi> = emptyList(),
     val isLoading: Boolean = false,
     val errorMessage: String? = null,

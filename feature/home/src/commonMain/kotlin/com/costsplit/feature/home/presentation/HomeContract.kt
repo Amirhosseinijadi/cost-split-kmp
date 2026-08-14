@@ -11,12 +11,12 @@ sealed interface HomeIntent : MviIntent {
 }
 
 data class HomeState(
-    val title: String = "Cost Split",
-    val subtitle: String = "Track shared costs, settle balances, and keep groups clear.",
+    val title: String = "دُنگی",
+    val subtitle: String = "خرج‌های مشترک، ساده و بی‌دردسر",
     val amountYouOwe: String = "$86.40",
     val amountOwedBack: String = "$132.25",
-    val oweDetail: String = "Across 3 groups",
-    val owedBackDetail: String = "From 5 friends",
+    val oweDetail: String = "در ۳ گروه",
+    val owedBackDetail: String = "از ۵ دوست",
     val recentGroups: List<HomeGroupUi> = emptyList(),
     val isLoading: Boolean = false,
     val errorMessage: String? = null,

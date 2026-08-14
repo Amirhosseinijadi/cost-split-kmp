@@ -1,6 +1,5 @@
 package com.costsplit.feature.groups.presentation.detail
 
-import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -8,84 +7,195 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.costsplit.core.ui.components.AmountPill
+import com.costsplit.core.ui.components.AvatarBadge
+import com.costsplit.core.ui.components.BalanceHero
+import com.costsplit.core.ui.components.DongiCard
+import com.costsplit.core.ui.components.DongiEmptyState
+import com.costsplit.core.ui.components.DongiGlyph
+import com.costsplit.core.ui.components.DongiIcon
+import com.costsplit.core.ui.components.DongiScreen
 import com.costsplit.core.ui.components.SectionHeader
+import com.costsplit.core.ui.components.ScreenTitle
 import com.costsplit.feature.groups.presentation.GroupExpenseUi
 import com.costsplit.feature.groups.presentation.GroupUi
+import com.costsplit.feature.groups.presentation.MemberBalanceUi
 
 @Composable
 fun GroupDetailsScreen(
     group: GroupUi?,
     expenses: List<GroupExpenseUi>,
 ) {
-    LazyColumn(
-        modifier = Modifier.fillMaxSize(),
-        contentPadding = PaddingValues(20.dp),
-        verticalArrangement = Arrangement.spacedBy(16.dp),
-    ) {
-        item {
-            Column(verticalArrangement = Arrangement.spacedBy(6.dp)) {
-                Text(
-                    text = group?.name ?: "Group",
-                    style = MaterialTheme.typography.headlineMedium,
-                    fontWeight = FontWeight.Bold,
-                )
-                Text(
-                    text = "Balances, expenses, and settlement suggestions.",
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+    DongiScreen(modifier = Modifier.fillMaxSize()) {
+        LazyColumn(
+            modifier = Modifier.fillMaxSize(),
+            contentPadding = PaddingValues(bottom = 10.dp),
+            verticalArrangement = Arrangement.spacedBy(18.dp),
+        ) {
+            item {
+                ScreenTitle(
+                    title = group?.name ?: "جزئیات گروه",
+                    subtitle = "${group?.members ?: "بدون عضو"} • ${group?.currency ?: "USD"}",
                 )
             }
-        }
 
-        item {
-            Surface(
-                modifier = Modifier.fillMaxWidth(),
-                color = MaterialTheme.colorScheme.primaryContainer,
-                contentColor = MaterialTheme.colorScheme.onPrimaryContainer,
-                shape = MaterialTheme.shapes.small,
-            ) {
-                Column(
-                    modifier = Modifier.padding(18.dp),
-                    verticalArrangement = Arrangement.spacedBy(8.dp),
-                ) {
-                    Text("Best next settlement", style = MaterialTheme.typography.labelLarge)
-                    Text(
-                        text = group?.settlement ?: "No settlement available",
-                        style = MaterialTheme.typography.titleLarge,
-                        fontWeight = FontWeight.Bold,
+            item {
+                BalanceHero(
+                    title = "مانده‌ی شما در این گروه",
+                    amount = group?.balance ?: "+$0.00",
+                    detail = group?.settlement ?: "اطلاعات تسویه در دسترس نیست",
+                    action = {
+                        Button(
+                            onClick = {},
+                            colors = ButtonDefaults.buttonColors(
+                                containerColor = androidx.compose.ui.graphics.Color.White,
+                                contentColor = androidx.compose.ui.graphics.Color(0xFF183E36),
+                            ),
+                        ) {
+                            Text("ثبت هزینه")
+                        }
+                    },
+                )
+            }
+
+            item {
+                SectionHeader(title = "اعضا و مانده‌ها")
+            }
+
+            item {
+                val members = group?.memberBalances.orEmpty()
+                if (members.isEmpty()) {
+                    DongiEmptyState(
+                        title = "مانده‌ای ثبت نشده",
+                        message = "با ثبت اولین هزینه، مانده‌ی اعضا محاسبه می‌شود.",
+                    )
+                } else {
+                    LazyRow(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
+                        items(members) { member -> MemberCard(member) }
+                    }
+                }
+            }
+
+            item {
+                SectionHeader(title = "هزینه‌های اخیر")
+            }
+
+            items(expenses) { expense ->
+                ExpenseRow(expense)
+            }
+
+            if (expenses.isEmpty()) {
+                item {
+                    DongiEmptyState(
+                        title = "هنوز هزینه‌ای نیست",
+                        message = "اولین هزینه‌ی مشترک این گروه را ثبت کنید.",
                     )
                 }
             }
         }
+    }
+}
 
-        item {
-            SectionHeader(title = "Expenses")
-        }
-
-        items(expenses) { expense ->
-            Surface(
-                modifier = Modifier.fillMaxWidth(),
-                shape = MaterialTheme.shapes.small,
-                color = MaterialTheme.colorScheme.surface,
-                border = BorderStroke(1.dp, MaterialTheme.colorScheme.outline),
-            ) {
-                Row(
-                    modifier = Modifier.fillMaxWidth().padding(16.dp),
-                    horizontalArrangement = Arrangement.SpaceBetween,
-                ) {
-                    Text(expense.title, fontWeight = FontWeight.SemiBold)
-                    AmountPill(expense.amount)
-                }
-            }
+@Composable
+private fun MemberCard(
+    member: MemberBalanceUi,
+) {
+    DongiCard(
+        modifier = Modifier.width(128.dp),
+        contentPadding = PaddingValues(horizontal = 8.dp, vertical = 14.dp),
+    ) {
+        Column(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.spacedBy(8.dp),
+        ) {
+            AvatarBadge(label = member.name.firstOrNull()?.toString().orEmpty(), size = 34.dp)
+            Text(
+                text = member.name,
+                color = MaterialTheme.colorScheme.onSurface,
+                style = MaterialTheme.typography.bodySmall,
+                fontWeight = FontWeight.SemiBold,
+            )
+            Text(
+                text = member.amount,
+                color = if (member.amount.trim().startsWith("-")) {
+                    MaterialTheme.colorScheme.error
+                } else {
+                    MaterialTheme.colorScheme.tertiary
+                },
+                style = MaterialTheme.typography.labelMedium,
+            )
         }
     }
+}
+
+@Composable
+private fun ExpenseRow(expense: GroupExpenseUi) {
+    DongiCard(modifier = Modifier.fillMaxWidth()) {
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
+            Row(
+                modifier = Modifier.weight(1f),
+                horizontalArrangement = Arrangement.spacedBy(14.dp),
+                verticalAlignment = Alignment.CenterVertically,
+            ) {
+                androidx.compose.material3.Surface(
+                    shape = androidx.compose.foundation.shape.CircleShape,
+                    color = MaterialTheme.colorScheme.surfaceVariant,
+                ) {
+                    androidx.compose.foundation.layout.Box(
+                        modifier = Modifier.padding(10.dp),
+                        contentAlignment = Alignment.Center,
+                    ) {
+                        DongiGlyph(DongiIcon.Receipt, MaterialTheme.colorScheme.primary, size = 20.dp)
+                    }
+                }
+                Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
+                    Text(
+                        text = expense.title,
+                        color = MaterialTheme.colorScheme.onSurface,
+                        fontWeight = FontWeight.SemiBold,
+                        style = MaterialTheme.typography.titleMedium,
+                    )
+                    Text(
+                        text = expenseMeta(expense),
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        style = MaterialTheme.typography.bodySmall,
+                    )
+                }
+            }
+            AmountPill(expense.amount)
+        }
+    }
+}
+
+private fun expenseMeta(expense: GroupExpenseUi): String {
+    val category = when (expense.category.lowercase()) {
+        "food" -> "خوراک"
+        "transport" -> "رفت‌وآمد"
+        "travel" -> "سفر"
+        "shopping" -> "خرید"
+        else -> "هزینه مشترک"
+    }
+    return listOfNotNull(
+        expense.paidBy.takeIf { it.isNotBlank() }?.let { "پرداخت با $it" },
+        category,
+        expense.date.takeIf { it.isNotBlank() },
+    ).joinToString(" • ")
 }
