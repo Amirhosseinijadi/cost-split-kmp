@@ -3,21 +3,20 @@ package com.costsplit.feature.activity
 import com.costsplit.core.common.mvi.MviEffect
 import com.costsplit.core.common.mvi.MviIntent
 import com.costsplit.core.common.mvi.MviState
+import com.costsplit.core.ui.strings.DongiText
 
 sealed interface ActivityIntent : MviIntent {
     data object Refresh : ActivityIntent
 }
 
 data class ActivityState(
-    val title: String = "فعالیت‌ها",
-    val subtitle: String = "همه‌ی تغییرات حساب‌ها در یک نگاه",
     val activities: List<ActivityUi> = emptyList(),
     val isLoading: Boolean = false,
-    val errorMessage: String? = null,
+    val errorMessage: DongiText? = null,
 ) : MviState
 
 data class ActivityUi(
-    val title: String,
+    val title: DongiText,
     val group: String,
     val amount: String,
     val date: String,

@@ -9,15 +9,7 @@ sealed interface SettingsIntent : MviIntent {
 }
 
 data class SettingsState(
-    val title: String = "تنظیمات",
-    val subtitle: String = "دُنگی را آن‌طور که دوست دارید تنظیم کنید",
     val notificationsEnabled: Boolean = true,
-    val settings: List<SettingUi> = emptyList(),
 ) : MviState
-
-data class SettingUi(
-    val title: String,
-    val value: String,
-)
 
 sealed interface SettingsEffect : MviEffect

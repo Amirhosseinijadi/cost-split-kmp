@@ -9,6 +9,7 @@ kotlin {
         commonMain.dependencies {
             api(project(":core:common"))
             implementation(project(":core:network"))
+            implementation(project(":core:ui"))
             implementation(compose.runtime)
             implementation(libs.koin.core)
             implementation(libs.koin.compose.viewmodel)

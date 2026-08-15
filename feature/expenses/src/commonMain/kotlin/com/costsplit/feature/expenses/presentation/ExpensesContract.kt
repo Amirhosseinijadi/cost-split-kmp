@@ -5,6 +5,7 @@ import com.costsplit.core.common.mvi.MviIntent
 import com.costsplit.core.common.mvi.MviState
 import com.costsplit.feature.expenses.domain.model.Expense
 import com.costsplit.feature.expenses.domain.model.NewExpense
+import com.costsplit.core.ui.strings.DongiText
 
 sealed interface ExpensesIntent : MviIntent {
     data class Load(val groupId: String) : ExpensesIntent
@@ -16,10 +17,10 @@ data class ExpensesState(
     val expenses: List<Expense> = emptyList(),
     val isLoading: Boolean = false,
     val isSaving: Boolean = false,
-    val errorMessage: String? = null,
+    val errorMessage: DongiText? = null,
 ) : MviState
 
 sealed interface ExpensesEffect : MviEffect {
     data object ExpenseAdded : ExpensesEffect
-    data class ShowMessage(val message: String) : ExpensesEffect
+    data class ShowMessage(val message: DongiText) : ExpensesEffect
 }

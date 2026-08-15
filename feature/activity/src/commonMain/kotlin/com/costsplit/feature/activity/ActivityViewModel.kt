@@ -3,7 +3,9 @@ package com.costsplit.feature.activity
 import androidx.lifecycle.viewModelScope
 import com.costsplit.core.common.mvi.BaseMviViewModel
 import com.costsplit.core.common.result.AppResult
-import com.costsplit.core.common.result.message
+import com.costsplit.core.ui.strings.DongiString
+import com.costsplit.core.ui.strings.DongiText
+import com.costsplit.core.ui.strings.toDongiText
 import com.costsplit.feature.expenses.domain.model.Expense
 import com.costsplit.feature.expenses.domain.usecase.GetExpensesUseCase
 import com.costsplit.feature.groups.domain.model.Group
@@ -32,20 +34,20 @@ class ActivityViewModel(
         val users = when (val result = getUsers()) {
             is AppResult.Success -> result.value
             is AppResult.Failure -> {
-                updateState { copy(isLoading = false, errorMessage = result.error.message()) }
+                updateState { copy(isLoading = false, errorMessage = result.error.toDongiText()) }
                 return@launch
             }
         }
         val activeUser = users.firstOrNull()
         if (activeUser == null) {
-            updateState { copy(isLoading = false, errorMessage = "هنوز کاربری ساخته نشده است.") }
+            updateState { copy(isLoading = false, errorMessage = DongiText(DongiString.ErrorNoUser)) }
             return@launch
         }
 
         val groups = when (val result = getUserGroups(activeUser.id)) {
             is AppResult.Success -> result.value
             is AppResult.Failure -> {
-                updateState { copy(isLoading = false, errorMessage = result.error.message()) }
+                updateState { copy(isLoading = false, errorMessage = result.error.toDongiText()) }
                 return@launch
             }
         }
@@ -78,7 +80,10 @@ class ActivityViewModel(
     }
 
     private fun Expense.toActivity(groupName: String) = ActivityUi(
-        title = "$paidByDisplayName هزینه‌ی «$description» را ثبت کرد",
+        title = DongiText(
+            DongiString.ActivityAddedExpense,
+            listOf(paidByDisplayName, description),
+        ),
         group = groupName,
         amount = totalAmount.formattedMoney(currency),
         date = occurredOn.ifBlank { createdAt.take(10) },

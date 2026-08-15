@@ -33,6 +33,10 @@ import com.costsplit.core.ui.components.ScreenTitle
 import com.costsplit.feature.groups.presentation.GroupExpenseUi
 import com.costsplit.feature.groups.presentation.GroupUi
 import com.costsplit.feature.groups.presentation.MemberBalanceUi
+import com.costsplit.core.ui.strings.DongiString
+import com.costsplit.core.ui.strings.dongiString
+import com.costsplit.core.ui.strings.dongiText
+import com.costsplit.core.ui.strings.toPersianDigits
 
 @Composable
 fun GroupDetailsScreen(
@@ -47,16 +51,23 @@ fun GroupDetailsScreen(
         ) {
             item {
                 ScreenTitle(
-                    title = group?.name ?: "جزئیات گروه",
-                    subtitle = "${group?.members ?: "بدون عضو"} • ${group?.currency ?: "USD"}",
+                    title = group?.name ?: dongiString(DongiString.GroupDetailsTitle),
+                    subtitle = dongiString(
+                        DongiString.GroupSubtitle,
+                        group?.let {
+                            dongiString(DongiString.MembersCount, it.memberCount.toPersianDigits())
+                        } ?: dongiString(DongiString.WithoutMembers),
+                        group?.currency ?: "USD",
+                    ),
                 )
             }
 
             item {
                 BalanceHero(
-                    title = "مانده‌ی شما در این گروه",
-                    amount = group?.balance ?: "+$0.00",
-                    detail = group?.settlement ?: "اطلاعات تسویه در دسترس نیست",
+                    title = dongiString(DongiString.GroupYourBalance),
+                    amount = group?.balance ?: dongiString(DongiString.Settled),
+                    detail = group?.settlement?.let { dongiText(it) }
+                        ?: dongiString(DongiString.SettlementUnavailable),
                     action = {
                         Button(
                             onClick = {},
@@ -65,22 +76,22 @@ fun GroupDetailsScreen(
                                 contentColor = androidx.compose.ui.graphics.Color(0xFF183E36),
                             ),
                         ) {
-                            Text("ثبت هزینه")
+                            Text(dongiString(DongiString.AddExpense))
                         }
                     },
                 )
             }
 
             item {
-                SectionHeader(title = "اعضا و مانده‌ها")
+                SectionHeader(title = dongiString(DongiString.MembersAndBalances))
             }
 
             item {
                 val members = group?.memberBalances.orEmpty()
                 if (members.isEmpty()) {
                     DongiEmptyState(
-                        title = "مانده‌ای ثبت نشده",
-                        message = "با ثبت اولین هزینه، مانده‌ی اعضا محاسبه می‌شود.",
+                        title = dongiString(DongiString.NoBalanceTitle),
+                        message = dongiString(DongiString.NoBalanceMessage),
                     )
                 } else {
                     LazyRow(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
@@ -90,7 +101,7 @@ fun GroupDetailsScreen(
             }
 
             item {
-                SectionHeader(title = "هزینه‌های اخیر")
+                SectionHeader(title = dongiString(DongiString.RecentExpenses))
             }
 
             items(expenses) { expense ->
@@ -100,8 +111,8 @@ fun GroupDetailsScreen(
             if (expenses.isEmpty()) {
                 item {
                     DongiEmptyState(
-                        title = "هنوز هزینه‌ای نیست",
-                        message = "اولین هزینه‌ی مشترک این گروه را ثبت کنید.",
+                        title = dongiString(DongiString.NoExpenseTitle),
+                        message = dongiString(DongiString.NoExpenseMessage),
                     )
                 }
             }
@@ -185,17 +196,20 @@ private fun ExpenseRow(expense: GroupExpenseUi) {
     }
 }
 
+@Composable
 private fun expenseMeta(expense: GroupExpenseUi): String {
     val category = when (expense.category.lowercase()) {
-        "food" -> "خوراک"
-        "transport" -> "رفت‌وآمد"
-        "travel" -> "سفر"
-        "shopping" -> "خرید"
-        else -> "هزینه مشترک"
+        "food" -> dongiString(DongiString.CategoryFood)
+        "transport" -> dongiString(DongiString.CategoryTransport)
+        "travel" -> dongiString(DongiString.CategoryTravel)
+        "shopping" -> dongiString(DongiString.CategoryShopping)
+        else -> dongiString(DongiString.CategoryGeneral)
     }
     return listOfNotNull(
-        expense.paidBy.takeIf { it.isNotBlank() }?.let { "پرداخت با $it" },
+        expense.paidBy.takeIf { it.isNotBlank() }?.let {
+            dongiString(DongiString.PaidBy, it)
+        },
         category,
         expense.date.takeIf { it.isNotBlank() },
-    ).joinToString(" • ")
+    ).joinToString(dongiString(DongiString.MetadataSeparator))
 }

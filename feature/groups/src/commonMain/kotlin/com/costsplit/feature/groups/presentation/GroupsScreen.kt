@@ -28,6 +28,10 @@ import com.costsplit.core.ui.components.DongiIcon
 import com.costsplit.core.ui.components.DongiLoadingRows
 import com.costsplit.core.ui.components.DongiScreen
 import com.costsplit.core.ui.components.ScreenTitle
+import com.costsplit.core.ui.strings.DongiString
+import com.costsplit.core.ui.strings.dongiString
+import com.costsplit.core.ui.strings.dongiText
+import com.costsplit.core.ui.strings.toPersianDigits
 
 @Composable
 fun GroupsScreen(
@@ -42,16 +46,16 @@ fun GroupsScreen(
         ) {
             item {
                 ScreenTitle(
-                    title = state.title,
-                    subtitle = state.subtitle,
+                    title = dongiString(DongiString.GroupsTitle),
+                    subtitle = dongiString(DongiString.GroupsSubtitle),
                     trailing = {
                         Row(
                             horizontalArrangement = Arrangement.spacedBy(8.dp),
                             verticalAlignment = Alignment.CenterVertically,
                         ) {
-                            AvatarBadge(label = "م", size = 36.dp)
+                            AvatarBadge(label = dongiString(DongiString.MyAvatar), size = 36.dp)
                             Text(
-                                text = "حساب من",
+                                text = dongiString(DongiString.MyAccount),
                                 color = MaterialTheme.colorScheme.onSurfaceVariant,
                                 style = MaterialTheme.typography.labelLarge,
                             )
@@ -62,9 +66,12 @@ fun GroupsScreen(
 
             item {
                 BalanceHero(
-                    title = "مانده‌ی کل",
+                    title = dongiString(DongiString.TotalBalance),
                     amount = totalBalance(state.groups),
-                    detail = "در ${state.groups.size.toPersianDigits()} گروه فعال",
+                    detail = dongiString(
+                        DongiString.ActiveGroupsCount,
+                        state.groups.size.toPersianDigits(),
+                    ),
                     action = {
                         Button(
                             onClick = { onIntent(GroupsIntent.AddGroupClicked) },
@@ -73,7 +80,7 @@ fun GroupsScreen(
                                 contentColor = androidx.compose.ui.graphics.Color(0xFF183E36),
                             ),
                         ) {
-                            Text("گروه جدید")
+                            Text(dongiString(DongiString.CreateGroup))
                         }
                     },
                 )
@@ -82,7 +89,7 @@ fun GroupsScreen(
             state.errorMessage?.let { message ->
                 item {
                     Text(
-                        text = message,
+                        text = dongiText(message),
                         color = MaterialTheme.colorScheme.error,
                         style = MaterialTheme.typography.bodyMedium,
                     )
@@ -102,8 +109,8 @@ fun GroupsScreen(
             if (!state.isLoading && state.errorMessage == null && state.groups.isEmpty()) {
                 item {
                     DongiEmptyState(
-                        title = "اینجا هنوز خلوت است",
-                        message = "یک گروه بسازید و اعضا را برای تقسیم هزینه‌ها اضافه کنید.",
+                        title = dongiString(DongiString.GroupsEmptyTitle),
+                        message = dongiString(DongiString.GroupsEmptyMessage),
                     )
                 }
             }
@@ -144,7 +151,10 @@ private fun GroupRow(
                             style = MaterialTheme.typography.titleMedium,
                         )
                         Text(
-                            text = group.members,
+                            text = dongiString(
+                                DongiString.MembersCount,
+                                group.memberCount.toPersianDigits(),
+                            ),
                             color = MaterialTheme.colorScheme.onSurfaceVariant,
                             style = MaterialTheme.typography.bodySmall,
                         )
@@ -154,7 +164,7 @@ private fun GroupRow(
                     horizontalArrangement = Arrangement.spacedBy(8.dp),
                     verticalAlignment = Alignment.CenterVertically,
                 ) {
-                    AmountPill(group.balance)
+                    AmountPill(group.balance ?: dongiString(DongiString.Settled))
                     DongiGlyph(
                         icon = DongiIcon.Chevron,
                         color = MaterialTheme.colorScheme.onSurfaceVariant,
@@ -168,7 +178,7 @@ private fun GroupRow(
                 verticalAlignment = Alignment.CenterVertically,
             ) {
                 Text(
-                    text = group.settlement,
+                    text = dongiText(group.settlement),
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                     style = MaterialTheme.typography.bodySmall,
                 )
@@ -193,10 +203,6 @@ private fun AvatarStack(group: GroupUi) {
 }
 
 private fun totalBalance(groups: List<GroupUi>): String {
-    val firstPositive = groups.firstOrNull { it.balance.trim().startsWith("+") }?.balance
-    return firstPositive ?: groups.firstOrNull()?.balance ?: "+ $0.00"
+    val firstPositive = groups.firstOrNull { it.balance?.trim()?.startsWith("+") == true }?.balance
+    return firstPositive ?: groups.firstNotNullOfOrNull { it.balance } ?: "+$0.00"
 }
-
-private fun Int.toPersianDigits(): String = toString().map { digit ->
-    if (digit.isDigit()) "۰۱۲۳۴۵۶۷۸۹"[digit.digitToInt()] else digit
-}.joinToString("")

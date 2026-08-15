@@ -24,12 +24,19 @@ import com.costsplit.core.ui.components.DongiIcon
 import com.costsplit.core.ui.components.DongiScreen
 import com.costsplit.core.ui.components.SectionHeader
 import com.costsplit.core.ui.components.ScreenTitle
+import com.costsplit.core.ui.strings.DongiString
+import com.costsplit.core.ui.strings.dongiString
 
 @Composable
 fun SettingsScreen(
     state: SettingsState,
     onIntent: (SettingsIntent) -> Unit,
 ) {
+    val settings = listOf(
+        DongiString.DefaultCurrency to DongiString.CurrencyUsDollar,
+        DongiString.SplitMethod to DongiString.EqualSplit,
+        DongiString.PaymentReminder to DongiString.EveryFriday,
+    )
     DongiScreen(modifier = Modifier.fillMaxSize()) {
         LazyColumn(
             modifier = Modifier.fillMaxSize(),
@@ -38,8 +45,8 @@ fun SettingsScreen(
         ) {
             item {
                 ScreenTitle(
-                    title = state.title,
-                    subtitle = state.subtitle,
+                    title = dongiString(DongiString.SettingsTitle),
+                    subtitle = dongiString(DongiString.SettingsSubtitle),
                 )
             }
 
@@ -52,13 +59,13 @@ fun SettingsScreen(
                     ) {
                         Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
                             Text(
-                                text = "اعلان‌ها",
+                                text = dongiString(DongiString.Notifications),
                                 color = MaterialTheme.colorScheme.onSurface,
                                 fontWeight = FontWeight.SemiBold,
                                 style = MaterialTheme.typography.titleMedium,
                             )
                             Text(
-                                text = "یادآوری مانده‌حساب و تسویه‌ها",
+                                text = dongiString(DongiString.NotificationsSubtitle),
                                 color = MaterialTheme.colorScheme.onSurfaceVariant,
                                 style = MaterialTheme.typography.bodySmall,
                             )
@@ -72,7 +79,7 @@ fun SettingsScreen(
             }
 
             item {
-                SectionHeader(title = "ترجیحات حساب")
+                SectionHeader(title = dongiString(DongiString.AccountPreferences))
             }
 
             item {
@@ -81,9 +88,9 @@ fun SettingsScreen(
                     contentPadding = PaddingValues(0.dp),
                 ) {
                     Column {
-                        state.settings.forEachIndexed { index, setting ->
-                            SettingRow(setting)
-                            if (index != state.settings.lastIndex) {
+                        settings.forEachIndexed { index, setting ->
+                            SettingRow(setting.first, setting.second)
+                            if (index != settings.lastIndex) {
                                 HorizontalDivider(
                                     modifier = Modifier.padding(horizontal = 18.dp),
                                     color = MaterialTheme.colorScheme.outlineVariant,
@@ -98,7 +105,7 @@ fun SettingsScreen(
 }
 
 @Composable
-private fun SettingRow(setting: SettingUi) {
+private fun SettingRow(title: DongiString, value: DongiString) {
     Row(
         modifier = Modifier.fillMaxWidth().padding(horizontal = 18.dp, vertical = 15.dp),
         horizontalArrangement = Arrangement.SpaceBetween,
@@ -106,13 +113,13 @@ private fun SettingRow(setting: SettingUi) {
     ) {
         Column(verticalArrangement = Arrangement.spacedBy(2.dp)) {
             Text(
-                text = setting.title,
+                text = dongiString(title),
                 color = MaterialTheme.colorScheme.onSurface,
                 fontWeight = FontWeight.SemiBold,
                 style = MaterialTheme.typography.bodyMedium,
             )
             Text(
-                text = setting.value,
+                text = dongiString(value),
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
                 style = MaterialTheme.typography.bodySmall,
             )

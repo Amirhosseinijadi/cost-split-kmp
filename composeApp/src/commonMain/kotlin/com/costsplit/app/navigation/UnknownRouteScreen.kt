@@ -24,9 +24,5 @@ fun UnknownRouteScreen(route: AppRoute) {
             text = dongiString(DongiString.UnknownScreen),
             style = MaterialTheme.typography.titleLarge,
         )
-        Text(
-            text = route.toString(),
-            color = MaterialTheme.colorScheme.onSurfaceVariant,
-        )
     }
 }

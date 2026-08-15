@@ -2,9 +2,8 @@ package com.costsplit.feature.expenses.presentation
 
 import androidx.lifecycle.viewModelScope
 import com.costsplit.core.common.mvi.BaseMviViewModel
-import com.costsplit.core.common.result.ApiError
 import com.costsplit.core.common.result.AppResult
-import com.costsplit.core.common.result.message
+import com.costsplit.core.ui.strings.toDongiText
 import com.costsplit.feature.expenses.domain.usecase.AddExpenseUseCase
 import com.costsplit.feature.expenses.domain.usecase.GetExpensesUseCase
 import kotlinx.coroutines.launch
@@ -30,7 +29,7 @@ class ExpensesViewModel(
             }
 
             is AppResult.Failure -> updateState {
-                copy(isLoading = false, errorMessage = result.error.message())
+                copy(isLoading = false, errorMessage = result.error.toDongiText())
             }
         }
     }
@@ -47,7 +46,7 @@ class ExpensesViewModel(
                 }
 
                 is AppResult.Failure -> {
-                    val message = result.error.message()
+                    val message = result.error.toDongiText()
                     updateState { copy(isSaving = false, errorMessage = message) }
                     emitEffect(ExpensesEffect.ShowMessage(message))
                 }

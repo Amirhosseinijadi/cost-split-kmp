@@ -26,6 +26,9 @@ import com.costsplit.core.ui.components.DongiLoadingRows
 import com.costsplit.core.ui.components.DongiScreen
 import com.costsplit.core.ui.components.SectionHeader
 import com.costsplit.core.ui.components.ScreenTitle
+import com.costsplit.core.ui.strings.DongiString
+import com.costsplit.core.ui.strings.dongiString
+import com.costsplit.core.ui.strings.dongiText
 
 @Composable
 fun ActivityScreen(
@@ -40,19 +43,19 @@ fun ActivityScreen(
         ) {
             item {
                 ScreenTitle(
-                    title = state.title,
-                    subtitle = state.subtitle,
+                    title = dongiString(DongiString.ActivityTitle),
+                    subtitle = dongiString(DongiString.ActivitySubtitle),
                 )
             }
 
             item {
-                SectionHeader(title = "تازه‌ترین تغییرات")
+                SectionHeader(title = dongiString(DongiString.RecentUpdates))
             }
 
             state.errorMessage?.let { message ->
                 item {
                     Text(
-                        text = message,
+                        text = dongiText(message),
                         color = MaterialTheme.colorScheme.error,
                         style = MaterialTheme.typography.bodyMedium,
                     )
@@ -72,8 +75,8 @@ fun ActivityScreen(
             if (!state.isLoading && state.errorMessage == null && state.activities.isEmpty()) {
                 item {
                     DongiEmptyState(
-                        title = "هنوز فعالیتی نیست",
-                        message = "با ثبت اولین هزینه، تغییرات گروه اینجا دیده می‌شوند.",
+                        title = dongiString(DongiString.ActivityEmptyTitle),
+                        message = dongiString(DongiString.ActivityEmptyMessage),
                     )
                 }
             }
@@ -107,13 +110,17 @@ private fun ActivityRow(activity: ActivityUi) {
                 }
                 Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
                     Text(
-                        text = activity.title,
+                        text = dongiText(activity.title),
                         color = MaterialTheme.colorScheme.onSurface,
                         fontWeight = FontWeight.SemiBold,
                         style = MaterialTheme.typography.titleMedium,
                     )
                     Text(
-                        text = "${activity.group} • ${activity.date}",
+                        text = dongiString(
+                            DongiString.ActivityMetadata,
+                            activity.group,
+                            activity.date,
+                        ),
                         color = MaterialTheme.colorScheme.onSurfaceVariant,
                         style = MaterialTheme.typography.bodySmall,
                     )
